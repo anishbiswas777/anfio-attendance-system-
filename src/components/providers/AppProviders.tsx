@@ -30,7 +30,26 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
     const initial: Theme = saved ?? (prefersDark ? "dark" : "light");
     document.documentElement.classList.toggle("dark", initial === "dark");
     const frame = requestAnimationFrame(() => setTheme(initial));
-    return () => cancelAnimationFrame(frame);
+
+    // Suppress any injected Netlify badge/drawer elements dynamically
+    const removeNetlifyBadge = () => {
+      const badges = document.querySelectorAll(
+        'iframe[src*="netlify"], [id*="netlify-badge"], [class*="netlify-badge"], netlify-drawer'
+      );
+      badges.forEach((el) => {
+        (el as HTMLElement).style.setProperty("display", "none", "important");
+        (el as HTMLElement).style.setProperty("visibility", "hidden", "important");
+        el.remove();
+      });
+    };
+    removeNetlifyBadge();
+    const observer = new MutationObserver(removeNetlifyBadge);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+    };
   }, []);
 
   const toggleTheme = () => {

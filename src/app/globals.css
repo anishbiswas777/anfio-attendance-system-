@@ -166,3 +166,22 @@ html {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
 }
+
+/* Netlify Badge & Drawer Suppression */
+html.nl-narrow {
+  display: none !important;
+}
+
+iframe[src*="netlify"],
+iframe[id*="netlify"],
+div[id*="netlify-badge"],
+#netlify-badge,
+.netlify-badge,
+netlify-drawer,
+[data-netlify-deploy-id],
+[class*="nl-narrow"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
