@@ -2,22 +2,12 @@ import { Spinner } from "@/components/ui/Spinner";
 
 export default function AdminLoading() {
   return (
-    <div className="space-y-6">
-      <div className="h-8 w-48 bg-slate-200 dark:bg-slate-800 rounded-lg animate-pulse" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {[...Array(4)].map((_, i) => (
-          <div
-            key={i}
-            className="h-28 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 animate-pulse"
-          >
-            <div className="h-4 w-20 bg-slate-200 dark:bg-slate-800 rounded mb-3" />
-            <div className="h-8 w-16 bg-slate-300 dark:bg-slate-700 rounded" />
-          </div>
-        ))}
-      </div>
-      <div className="h-72 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 flex flex-col items-center justify-center gap-3">
-        <Spinner size="lg" />
-        <span className="text-xs text-slate-500 animate-pulse">Loading admin data...</span>
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/20 dark:bg-black/40 backdrop-blur-md pointer-events-none">
+      <div className="flex flex-col items-center justify-center gap-3">
+        <Spinner size="xl" className="h-14 w-14 drop-shadow-md" />
+        <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 tracking-wide drop-shadow-sm">
+          Loading...
+        </p>
       </div>
     </div>
   );

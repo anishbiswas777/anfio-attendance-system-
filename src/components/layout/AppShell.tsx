@@ -165,8 +165,13 @@ export function AppShell({
   return (
     <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950">
       {navigatingHref && (
-        <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-blue-100 dark:bg-blue-950 overflow-hidden">
-          <div className="h-full bg-blue-600 animate-[pulse_0.8s_ease-in-out_infinite] w-full" />
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/20 dark:bg-black/40 backdrop-blur-md">
+          <div className="flex flex-col items-center justify-center gap-3">
+            <Spinner size="xl" className="h-14 w-14 drop-shadow-md" />
+            <p className="text-sm font-semibold text-slate-800 dark:text-slate-100 tracking-wide drop-shadow-sm">
+              Loading...
+            </p>
+          </div>
         </div>
       )}
       {/* Desktop Sidebar */}
