@@ -29,6 +29,27 @@ export async function updateSession(request: NextRequest) {
     return supabaseResponse;
   }
 
+  const { pathname } = request.nextUrl;
+
+  // API routes handle their own auth & return 401/403 JSON responses without proxy overhead
+  if (pathname.startsWith("/api/")) {
+    return supabaseResponse;
+  }
+
+  const allCookies = request.cookies.getAll();
+  const hasAuthCookie = allCookies.some((c) => c.name.startsWith("sb-"));
+
+  // Fast path: if no auth cookies exist
+  if (!hasAuthCookie) {
+    if (isPublicPath(pathname)) {
+      return supabaseResponse;
+    }
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    url.searchParams.set("redirectTo", pathname);
+    return NextResponse.redirect(url);
+  }
+
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
@@ -55,16 +76,6 @@ export async function updateSession(request: NextRequest) {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-
-  const { pathname } = request.nextUrl;
-
-  // API routes handle their own 401/403 JSON responses cleanly
-  if (pathname.startsWith("/api/") && !isPublicPath(pathname)) {
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-    return supabaseResponse;
-  }
 
   if (!user && !isPublicPath(pathname)) {
     const url = request.nextUrl.clone();

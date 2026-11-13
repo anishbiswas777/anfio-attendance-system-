@@ -138,6 +138,7 @@ export function AdminLeaveClient({
                             <Button
                               size="sm"
                               loading={busyId === lr.id}
+                              disabled={Boolean(busyId)}
                               onClick={() => handleReview(lr.id, "APPROVED")}
                             >
                               Approve
@@ -145,6 +146,7 @@ export function AdminLeaveClient({
                             <Button
                               size="sm"
                               variant="danger"
+                              disabled={Boolean(busyId)}
                               onClick={() => setRejectTarget(lr)}
                             >
                               Reject

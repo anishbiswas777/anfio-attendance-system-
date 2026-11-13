@@ -22,21 +22,27 @@ export function NotificationsClient({
   const { toast } = useApp();
   const [items, setItems] = useState(initial);
   const [loadingAll, setLoadingAll] = useState(false);
+  const [markingId, setMarkingId] = useState<string | null>(null);
 
   const unreadCount = items.filter((n) => !n.read_at).length;
 
   const markAsRead = async (id: string) => {
-    const res = await fetch("/api/notifications", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
-    if (res.ok) {
-      const now = new Date().toISOString();
-      setItems((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, read_at: now } : n))
-      );
-      router.refresh();
+    setMarkingId(id);
+    try {
+      const res = await fetch("/api/notifications", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (res.ok) {
+        const now = new Date().toISOString();
+        setItems((prev) =>
+          prev.map((n) => (n.id === id ? { ...n, read_at: now } : n))
+        );
+        router.refresh();
+      }
+    } finally {
+      setMarkingId(null);
     }
   };
 
@@ -129,6 +135,8 @@ export function NotificationsClient({
                       <Button
                         size="sm"
                         variant="ghost"
+                        loading={markingId === n.id}
+                        disabled={Boolean(markingId)}
                         onClick={() => markAsRead(n.id)}
                       >
                         Mark read

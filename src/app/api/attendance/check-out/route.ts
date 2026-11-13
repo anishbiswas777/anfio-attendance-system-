@@ -87,7 +87,7 @@ export async function POST() {
       );
     }
 
-    await createAuditLog({
+    createAuditLog({
       actorId: profile.id,
       action: "CHECK_OUT",
       entityType: "attendance",
@@ -98,7 +98,7 @@ export async function POST() {
         working_minutes: workingMinutes,
         status,
       },
-    });
+    }).catch((err) => console.error("[check-out] audit log error:", err));
 
     return NextResponse.json({ attendance: updated });
   } catch (err) {

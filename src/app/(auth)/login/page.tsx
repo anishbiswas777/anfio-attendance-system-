@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/lib/validations/schemas";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
+import { PasswordInput } from "@/components/ui/PasswordInput";
 import { useApp } from "@/components/providers/AppProviders";
 import type { z } from "zod";
 
@@ -17,6 +18,7 @@ export default function LoginPage() {
   const router = useRouter();
   const { toast } = useApp();
   const [serverError, setServerError] = useState<string | null>(null);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const {
     register,
@@ -52,6 +54,7 @@ export default function LoginPage() {
       }
 
       if (profile.account_status === "PENDING") {
+        setIsNavigating(true);
         router.push("/pending-approval");
         return;
       }
@@ -60,6 +63,7 @@ export default function LoginPage() {
         profile.account_status === "REJECTED" ||
         profile.account_status === "SUSPENDED"
       ) {
+        setIsNavigating(true);
         router.push("/account-blocked");
         return;
       }
@@ -70,9 +74,11 @@ export default function LoginPage() {
         variant: "success",
       });
 
+      setIsNavigating(true);
       router.push(profile.role === "ADMIN" ? "/admin" : "/dashboard");
       router.refresh();
     } catch {
+      setIsNavigating(false);
       setServerError("Unable to sign in right now. Please try again.");
     }
   };
@@ -143,13 +149,11 @@ export default function LoginPage() {
                 Forgot password?
               </Link>
             </div>
-            <input
+            <PasswordInput
               id="password"
-              type="password"
               autoComplete="current-password"
               {...register("password")}
-              aria-invalid={Boolean(errors.password)}
-              className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+              error={Boolean(errors.password)}
               placeholder="••••••••"
             />
             {errors.password && (
@@ -157,8 +161,12 @@ export default function LoginPage() {
             )}
           </div>
 
-          <Button type="submit" loading={isSubmitting} className="w-full">
-            {isSubmitting ? "Signing in..." : "Sign in"}
+          <Button type="submit" loading={isSubmitting || isNavigating} className="w-full">
+            {isNavigating
+              ? "Loading dashboard..."
+              : isSubmitting
+              ? "Signing in..."
+              : "Sign in"}
           </Button>
         </form>
 

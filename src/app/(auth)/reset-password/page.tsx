@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { resetPasswordSchema } from "@/lib/validations/schemas";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
+import { PasswordInput } from "@/components/ui/PasswordInput";
 import { useApp } from "@/components/providers/AppProviders";
 import type { z } from "zod";
 
@@ -73,11 +74,10 @@ export default function ResetPasswordPage() {
             <label htmlFor="password" className="block text-sm font-medium mb-1">
               New Password
             </label>
-            <input
+            <PasswordInput
               id="password"
-              type="password"
               {...register("password")}
-              className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2.5 text-sm"
+              error={Boolean(errors.password)}
             />
             {errors.password && (
               <p className="mt-1 text-xs text-rose-600">{errors.password.message}</p>
@@ -91,11 +91,10 @@ export default function ResetPasswordPage() {
             >
               Confirm New Password
             </label>
-            <input
+            <PasswordInput
               id="confirm_password"
-              type="password"
               {...register("confirm_password")}
-              className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2.5 text-sm"
+              error={Boolean(errors.confirm_password)}
             />
             {errors.confirm_password && (
               <p className="mt-1 text-xs text-rose-600">

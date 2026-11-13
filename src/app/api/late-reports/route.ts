@@ -112,31 +112,31 @@ export async function POST(request: Request) {
       );
     }
 
-    await createAuditLog({
-      actorId: auth.profile.id,
-      action: "LATE_REPORT_SUBMITTED",
-      entityType: "late_report",
-      entityId: created.id,
-      newData: {
-        report_date: created.report_date,
-        reason: created.reason,
-      },
-    });
-
-    await notifyAdmins({
-      title: "New Late Report",
-      message: `${auth.profile.full_name} submitted a late report for ${parsed.data.report_date} (${parsed.data.reason}).`,
-      type: "INFO",
-      link: "/admin/late-reports",
-    });
-
-    await notifyManager({
-      employeeId: auth.profile.id,
-      title: "Team Late Report",
-      message: `${auth.profile.full_name} submitted a late report for ${parsed.data.report_date}.`,
-      type: "INFO",
-      link: "/team",
-    });
+    await Promise.all([
+      createAuditLog({
+        actorId: auth.profile.id,
+        action: "LATE_REPORT_SUBMITTED",
+        entityType: "late_report",
+        entityId: created.id,
+        newData: {
+          report_date: created.report_date,
+          reason: created.reason,
+        },
+      }),
+      notifyAdmins({
+        title: "New Late Report",
+        message: `${auth.profile.full_name} submitted a late report for ${parsed.data.report_date} (${parsed.data.reason}).`,
+        type: "INFO",
+        link: "/admin/late-reports",
+      }),
+      notifyManager({
+        employeeId: auth.profile.id,
+        title: "Team Late Report",
+        message: `${auth.profile.full_name} submitted a late report for ${parsed.data.report_date}.`,
+        type: "INFO",
+        link: "/team",
+      }),
+    ]);
 
     return NextResponse.json({ report: created }, { status: 201 });
   } catch (err) {

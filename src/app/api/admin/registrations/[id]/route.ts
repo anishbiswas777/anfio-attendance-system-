@@ -82,31 +82,32 @@ export async function PATCH(
       );
     }
 
-    await createAuditLog({
-      actorId: auth.profile.id,
-      action:
-        decision === "APPROVED"
-          ? "REGISTRATION_APPROVED"
-          : "REGISTRATION_REJECTED",
-      entityType: "profile",
-      entityId: id,
-      oldData: { account_status: "PENDING" },
-      newData: { account_status: nextStatus, rejection_reason: rejectionReason },
-    });
-
-    await notifyUser({
-      userId: id,
-      title:
-        decision === "APPROVED"
-          ? "Account Approved"
-          : "Registration Rejected",
-      message:
-        decision === "APPROVED"
-          ? "Welcome! Your employee account has been approved. You can now access the dashboard."
-          : `Your registration was rejected.${rejectionReason ? ` Reason: ${rejectionReason}` : ""}`,
-      type: decision === "APPROVED" ? "SUCCESS" : "ERROR",
-      link: decision === "APPROVED" ? "/dashboard" : undefined,
-    });
+    await Promise.all([
+      createAuditLog({
+        actorId: auth.profile.id,
+        action:
+          decision === "APPROVED"
+            ? "REGISTRATION_APPROVED"
+            : "REGISTRATION_REJECTED",
+        entityType: "profile",
+        entityId: id,
+        oldData: { account_status: "PENDING" },
+        newData: { account_status: nextStatus, rejection_reason: rejectionReason },
+      }),
+      notifyUser({
+        userId: id,
+        title:
+          decision === "APPROVED"
+            ? "Account Approved"
+            : "Registration Rejected",
+        message:
+          decision === "APPROVED"
+            ? "Welcome! Your employee account has been approved. You can now access the dashboard."
+            : `Your registration was rejected.${rejectionReason ? ` Reason: ${rejectionReason}` : ""}`,
+        type: decision === "APPROVED" ? "SUCCESS" : "ERROR",
+        link: decision === "APPROVED" ? "/dashboard" : undefined,
+      }),
+    ]);
 
     return NextResponse.json({ profile: updated });
   } catch (err) {

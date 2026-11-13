@@ -17,6 +17,7 @@ export function HolidaysClient({ holidays: initial }: { holidays: Holiday[] }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [saving, setSaving] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const handleAdd = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -56,11 +57,16 @@ export function HolidaysClient({ holidays: initial }: { holidays: Holiday[] }) {
   };
 
   const handleDelete = async (id: string) => {
-    const res = await fetch(`/api/admin/holidays/${id}`, { method: "DELETE" });
-    if (res.ok) {
-      setHolidays((prev) => prev.filter((h) => h.id !== id));
-      toast({ title: "Holiday removed", variant: "info" });
-      router.refresh();
+    setDeletingId(id);
+    try {
+      const res = await fetch(`/api/admin/holidays/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        setHolidays((prev) => prev.filter((h) => h.id !== id));
+        toast({ title: "Holiday removed", variant: "info" });
+        router.refresh();
+      }
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -147,6 +153,8 @@ export function HolidaysClient({ holidays: initial }: { holidays: Holiday[] }) {
                       size="sm"
                       variant="ghost"
                       aria-label={`Delete ${h.name}`}
+                      loading={deletingId === h.id}
+                      disabled={Boolean(deletingId)}
                       onClick={() => handleDelete(h.id)}
                     >
                       <Trash2 className="h-4 w-4 text-rose-500" />

@@ -119,6 +119,7 @@ export function RegistrationsClient({
                           <Button
                             size="sm"
                             variant="outline"
+                            disabled={Boolean(busyId)}
                             onClick={() => setViewItem(p)}
                           >
                             View
@@ -126,6 +127,7 @@ export function RegistrationsClient({
                           <Button
                             size="sm"
                             loading={busyId === p.id}
+                            disabled={Boolean(busyId)}
                             onClick={() => handleDecision(p.id, "APPROVED")}
                           >
                             Approve
@@ -133,6 +135,7 @@ export function RegistrationsClient({
                           <Button
                             size="sm"
                             variant="danger"
+                            disabled={Boolean(busyId)}
                             onClick={() => setRejectItem(p)}
                           >
                             Reject

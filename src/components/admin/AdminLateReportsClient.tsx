@@ -139,6 +139,7 @@ export function AdminLateReportsClient({
                             <Button
                               size="sm"
                               loading={busyId === rep.id}
+                              disabled={Boolean(busyId)}
                               onClick={() => handleReview(rep.id, "APPROVED")}
                             >
                               Approve
@@ -146,6 +147,7 @@ export function AdminLateReportsClient({
                             <Button
                               size="sm"
                               variant="danger"
+                              disabled={Boolean(busyId)}
                               onClick={() => setRejectTarget(rep)}
                             >
                               Reject

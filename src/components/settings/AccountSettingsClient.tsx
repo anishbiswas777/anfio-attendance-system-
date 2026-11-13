@@ -7,6 +7,7 @@ import { changePasswordSchema } from "@/lib/validations/schemas";
 import { createClient } from "@/lib/supabase/client";
 import { Card, CardContent, CardHeader } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import { PasswordInput } from "@/components/ui/PasswordInput";
 import { useApp } from "@/components/providers/AppProviders";
 import type { z } from "zod";
 
@@ -95,11 +96,10 @@ export function AccountSettingsClient({ email }: { email: string }) {
                 >
                   Current Password
                 </label>
-                <input
+                <PasswordInput
                   id="current_password"
-                  type="password"
                   {...register("current_password")}
-                  className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2 text-sm"
+                  error={Boolean(errors.current_password)}
                 />
                 {errors.current_password && (
                   <p className="mt-1 text-xs text-rose-600">
@@ -112,11 +112,10 @@ export function AccountSettingsClient({ email }: { email: string }) {
                 <label htmlFor="new_password" className="block text-sm font-medium mb-1">
                   New Password
                 </label>
-                <input
+                <PasswordInput
                   id="new_password"
-                  type="password"
                   {...register("new_password")}
-                  className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2 text-sm"
+                  error={Boolean(errors.new_password)}
                 />
                 {errors.new_password && (
                   <p className="mt-1 text-xs text-rose-600">
@@ -132,11 +131,10 @@ export function AccountSettingsClient({ email }: { email: string }) {
                 >
                   Confirm New Password
                 </label>
-                <input
+                <PasswordInput
                   id="confirm_password"
-                  type="password"
                   {...register("confirm_password")}
-                  className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2 text-sm"
+                  error={Boolean(errors.confirm_password)}
                 />
                 {errors.confirm_password && (
                   <p className="mt-1 text-xs text-rose-600">

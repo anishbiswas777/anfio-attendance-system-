@@ -2,7 +2,18 @@ import { createAdminClient } from "@/lib/supabase/server";
 import { DEFAULT_OFFICE_SETTINGS } from "@/lib/attendance/calculations";
 import type { OfficeSettings } from "@/types/database";
 
+let cachedSettings: { data: OfficeSettings; expiresAt: number } | null = null;
+const CACHE_TTL_MS = 60 * 1000; // 60 seconds
+
+export function invalidateOfficeSettingsCache() {
+  cachedSettings = null;
+}
+
 export async function getOfficeSettings(): Promise<OfficeSettings> {
+  if (cachedSettings && Date.now() < cachedSettings.expiresAt) {
+    return cachedSettings.data;
+  }
+
   try {
     const admin = createAdminClient();
     const { data, error } = await admin.from("app_settings").select("key, value");
@@ -16,7 +27,7 @@ export async function getOfficeSettings(): Promise<OfficeSettings> {
       map.set(row.key, row.value);
     }
 
-    return {
+    const settings: OfficeSettings = {
       office_start_time:
         typeof map.get("office_start_time") === "string"
           ? (map.get("office_start_time") as string)
@@ -65,6 +76,13 @@ export async function getOfficeSettings(): Promise<OfficeSettings> {
           ? (map.get("manager_can_approve_late") as boolean)
           : DEFAULT_OFFICE_SETTINGS.manager_can_approve_late,
     };
+
+    cachedSettings = {
+      data: settings,
+      expiresAt: Date.now() + CACHE_TTL_MS,
+    };
+
+    return settings;
   } catch {
     return DEFAULT_OFFICE_SETTINGS;
   }

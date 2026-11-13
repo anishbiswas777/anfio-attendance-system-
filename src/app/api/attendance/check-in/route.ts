@@ -79,7 +79,7 @@ export async function POST() {
       );
     }
 
-    await createAuditLog({
+    createAuditLog({
       actorId: profile.id,
       action: "CHECK_IN",
       entityType: "attendance",
@@ -90,7 +90,7 @@ export async function POST() {
         status,
         late_minutes: lateMinutes,
       },
-    });
+    }).catch((err) => console.error("[check-in] audit log error:", err));
 
     return NextResponse.json({ attendance: created }, { status: 201 });
   } catch (err) {

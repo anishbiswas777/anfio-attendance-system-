@@ -1,9 +1,10 @@
+import { cache } from "react";
 import { redirect } from "next/navigation";
 import { isSupabaseConfigured } from "@/lib/env";
 import { createClient } from "@/lib/supabase/server";
 import type { Profile } from "@/types/database";
 
-export async function getCurrentUserProfile(): Promise<{
+export const getCurrentUserProfile = cache(async function getCurrentUserProfile(): Promise<{
   userId: string | null;
   profile: Profile | null;
 }> {
@@ -47,7 +48,7 @@ export async function getCurrentUserProfile(): Promise<{
     userId: user.id,
     profile: typedProfile,
   };
-}
+});
 
 /**
  * Enforces an authenticated, ACTIVE user for Server Components.

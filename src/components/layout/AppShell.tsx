@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -25,6 +25,7 @@ import {
   Sun,
   Moon,
   ChevronRight,
+  Loader2,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useApp } from "@/components/providers/AppProviders";
@@ -86,6 +87,11 @@ export function AppShell({
   const { theme, toggleTheme, toast } = useApp();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
+  const [navigatingHref, setNavigatingHref] = useState<string | null>(null);
+
+  useEffect(() => {
+    setNavigatingHref(null);
+  }, [pathname]);
 
   const handleLogout = async () => {
     setLoggingOut(true);
@@ -115,11 +121,17 @@ export function AppShell({
     items.map((item) => {
       const Icon = item.icon;
       const active = isActive(item.href);
+      const isNavigating = navigatingHref === item.href;
       return (
         <Link
           key={item.href}
           href={item.href}
-          onClick={() => setMobileOpen(false)}
+          onClick={() => {
+            if (item.href !== pathname) {
+              setNavigatingHref(item.href);
+            }
+            setMobileOpen(false);
+          }}
           className={cn(
             "flex items-center justify-between rounded-xl px-3 py-2 text-sm font-medium transition-colors",
             active
@@ -128,7 +140,11 @@ export function AppShell({
           )}
         >
           <span className="flex items-center gap-2.5">
-            <Icon className="h-4 w-4 shrink-0" />
+            {isNavigating ? (
+              <Loader2 className="h-4 w-4 shrink-0 animate-spin text-blue-600 dark:text-blue-400" />
+            ) : (
+              <Icon className="h-4 w-4 shrink-0" />
+            )}
             <span>{item.label}</span>
           </span>
           {item.href === "/notifications" && unreadNotifications > 0 && (
@@ -147,6 +163,11 @@ export function AppShell({
 
   return (
     <div className="min-h-screen flex bg-slate-50 dark:bg-slate-950">
+      {navigatingHref && (
+        <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-blue-100 dark:bg-blue-950 overflow-hidden">
+          <div className="h-full bg-blue-600 animate-[pulse_0.8s_ease-in-out_infinite] w-full" />
+        </div>
+      )}
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
         <div className="flex h-16 items-center gap-2.5 border-b border-slate-100 dark:border-slate-800 px-5">

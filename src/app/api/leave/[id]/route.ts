@@ -138,34 +138,35 @@ export async function PATCH(
       }
     }
 
-    await createAuditLog({
-      actorId: auth.profile.id,
-      action:
-        parsed.data.decision === "APPROVED"
-          ? "LEAVE_APPROVED"
-          : "LEAVE_REJECTED",
-      entityType: "leave_request",
-      entityId: id,
-      oldData: { status: "PENDING" },
-      newData: {
-        status: parsed.data.decision,
-        rejection_reason: updated.rejection_reason,
-      },
-    });
-
-    await notifyUser({
-      userId: leaveReq.employee_id,
-      title:
-        parsed.data.decision === "APPROVED"
-          ? "Leave Request Approved"
-          : "Leave Request Rejected",
-      message:
-        parsed.data.decision === "APPROVED"
-          ? `Your leave request (${leaveReq.start_date} to ${leaveReq.end_date}) has been approved.`
-          : `Your leave request (${leaveReq.start_date} to ${leaveReq.end_date}) was rejected: ${parsed.data.rejection_reason}`,
-      type: parsed.data.decision === "APPROVED" ? "SUCCESS" : "WARNING",
-      link: "/leave",
-    });
+    await Promise.all([
+      createAuditLog({
+        actorId: auth.profile.id,
+        action:
+          parsed.data.decision === "APPROVED"
+            ? "LEAVE_APPROVED"
+            : "LEAVE_REJECTED",
+        entityType: "leave_request",
+        entityId: id,
+        oldData: { status: "PENDING" },
+        newData: {
+          status: parsed.data.decision,
+          rejection_reason: updated.rejection_reason,
+        },
+      }),
+      notifyUser({
+        userId: leaveReq.employee_id,
+        title:
+          parsed.data.decision === "APPROVED"
+            ? "Leave Request Approved"
+            : "Leave Request Rejected",
+        message:
+          parsed.data.decision === "APPROVED"
+            ? `Your leave request (${leaveReq.start_date} to ${leaveReq.end_date}) has been approved.`
+            : `Your leave request (${leaveReq.start_date} to ${leaveReq.end_date}) was rejected: ${parsed.data.rejection_reason}`,
+        type: parsed.data.decision === "APPROVED" ? "SUCCESS" : "WARNING",
+        link: "/leave",
+      }),
+    ]);
 
     return NextResponse.json({ request: updated });
   } catch (err) {

@@ -187,32 +187,32 @@ export async function POST(request: Request) {
       );
     }
 
-    await createAuditLog({
-      actorId: profile.id,
-      action: "LEAVE_SUBMITTED",
-      entityType: "leave_request",
-      entityId: created.id,
-      newData: {
-        start_date: created.start_date,
-        end_date: created.end_date,
-        total_days: totalDays,
-      },
-    });
-
-    await notifyAdmins({
-      title: "New Leave Request",
-      message: `${profile.full_name} requested ${totalDays} day(s) of leave (${parsed.data.start_date} to ${parsed.data.end_date}).`,
-      type: "INFO",
-      link: "/admin/leave",
-    });
-
-    await notifyManager({
-      employeeId: profile.id,
-      title: "Team Leave Request",
-      message: `${profile.full_name} submitted a leave request for ${parsed.data.start_date} to ${parsed.data.end_date}.`,
-      type: "INFO",
-      link: "/team",
-    });
+    await Promise.all([
+      createAuditLog({
+        actorId: profile.id,
+        action: "LEAVE_SUBMITTED",
+        entityType: "leave_request",
+        entityId: created.id,
+        newData: {
+          start_date: created.start_date,
+          end_date: created.end_date,
+          total_days: totalDays,
+        },
+      }),
+      notifyAdmins({
+        title: "New Leave Request",
+        message: `${profile.full_name} requested ${totalDays} day(s) of leave (${parsed.data.start_date} to ${parsed.data.end_date}).`,
+        type: "INFO",
+        link: "/admin/leave",
+      }),
+      notifyManager({
+        employeeId: profile.id,
+        title: "Team Leave Request",
+        message: `${profile.full_name} submitted a leave request for ${parsed.data.start_date} to ${parsed.data.end_date}.`,
+        type: "INFO",
+        link: "/team",
+      }),
+    ]);
 
     return NextResponse.json({ request: created }, { status: 201 });
   } catch (err) {

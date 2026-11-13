@@ -101,34 +101,35 @@ export async function PATCH(
       );
     }
 
-    await createAuditLog({
-      actorId: auth.profile.id,
-      action:
-        parsed.data.decision === "APPROVED"
-          ? "LATE_REPORT_APPROVED"
-          : "LATE_REPORT_REJECTED",
-      entityType: "late_report",
-      entityId: id,
-      oldData: { status: "PENDING" },
-      newData: {
-        status: parsed.data.decision,
-        rejection_reason: updated.rejection_reason,
-      },
-    });
-
-    await notifyUser({
-      userId: report.employee_id,
-      title:
-        parsed.data.decision === "APPROVED"
-          ? "Late Report Approved"
-          : "Late Report Rejected",
-      message:
-        parsed.data.decision === "APPROVED"
-          ? `Your late report for ${report.report_date} has been approved.`
-          : `Your late report for ${report.report_date} was rejected: ${parsed.data.rejection_reason}`,
-      type: parsed.data.decision === "APPROVED" ? "SUCCESS" : "WARNING",
-      link: "/late-reports",
-    });
+    await Promise.all([
+      createAuditLog({
+        actorId: auth.profile.id,
+        action:
+          parsed.data.decision === "APPROVED"
+            ? "LATE_REPORT_APPROVED"
+            : "LATE_REPORT_REJECTED",
+        entityType: "late_report",
+        entityId: id,
+        oldData: { status: "PENDING" },
+        newData: {
+          status: parsed.data.decision,
+          rejection_reason: updated.rejection_reason,
+        },
+      }),
+      notifyUser({
+        userId: report.employee_id,
+        title:
+          parsed.data.decision === "APPROVED"
+            ? "Late Report Approved"
+            : "Late Report Rejected",
+        message:
+          parsed.data.decision === "APPROVED"
+            ? `Your late report for ${report.report_date} has been approved.`
+            : `Your late report for ${report.report_date} was rejected: ${parsed.data.rejection_reason}`,
+        type: parsed.data.decision === "APPROVED" ? "SUCCESS" : "WARNING",
+        link: "/late-reports",
+      }),
+    ]);
 
     return NextResponse.json({ report: updated });
   } catch (err) {

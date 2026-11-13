@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireApiAdmin } from "@/lib/auth/session";
 import { createAdminClient } from "@/lib/supabase/server";
-import { getOfficeSettings } from "@/lib/settings/server";
+import { getOfficeSettings, invalidateOfficeSettingsCache } from "@/lib/settings/server";
 import { officeSettingsSchema } from "@/lib/validations/schemas";
 import { createAuditLog } from "@/lib/audit/logger";
 
@@ -51,6 +51,8 @@ export async function PATCH(request: Request) {
         { status: 500 }
       );
     }
+
+    invalidateOfficeSettingsCache();
 
     await createAuditLog({
       actorId: auth.profile.id,

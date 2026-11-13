@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircle2 } from "lucide-react";
 import { registerSchema } from "@/lib/validations/schemas";
 import { Button } from "@/components/ui/Button";
+import { PasswordInput } from "@/components/ui/PasswordInput";
 import type { Department } from "@/types/database";
 import type { z } from "zod";
 
@@ -286,11 +287,10 @@ export default function RegisterPage() {
               <label htmlFor="password" className="block text-sm font-medium mb-1">
                 Password *
               </label>
-              <input
+              <PasswordInput
                 id="password"
-                type="password"
                 {...register("password")}
-                className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2 text-sm"
+                error={Boolean(errors.password)}
                 placeholder="Min 8 chars, upper, lower, number"
               />
               {errors.password && (
@@ -305,11 +305,10 @@ export default function RegisterPage() {
               >
                 Confirm Password *
               </label>
-              <input
+              <PasswordInput
                 id="confirm_password"
-                type="password"
                 {...register("confirm_password")}
-                className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2 text-sm"
+                error={Boolean(errors.confirm_password)}
                 placeholder="Repeat password"
               />
               {errors.confirm_password && (
