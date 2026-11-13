@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { forgotPasswordSchema } from "@/lib/validations/schemas";
-import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import type { z } from "zod";
 
@@ -26,19 +25,22 @@ export default function ForgotPasswordPage() {
   const onSubmit = async (values: ForgotValues) => {
     setErrorMsg(null);
     try {
-      const supabase = createClient();
-      const redirectTo = `${window.location.origin}/api/auth/callback?next=/reset-password`;
-      const { error } = await supabase.auth.resetPasswordForEmail(
-        values.email.toLowerCase(),
-        { redirectTo }
-      );
-      if (error) {
-        setErrorMsg("Unable to send reset email. Please verify your email address.");
+      const res = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: values.email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        setErrorMsg(data.error || "Unable to send reset email. Please try again.");
         return;
       }
+
       setSent(true);
     } catch {
-      setErrorMsg("Unable to process request right now.");
+      setErrorMsg("Unable to process request right now. Please check your connection.");
     }
   };
 

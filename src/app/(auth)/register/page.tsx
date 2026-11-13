@@ -157,7 +157,7 @@ export default function RegisterPage() {
                 type="text"
                 {...register("full_name")}
                 className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2 text-sm"
-                placeholder="Anish Biswas"
+                placeholder="John Doe"
               />
               {errors.full_name && (
                 <p className="mt-1 text-xs text-rose-600">{errors.full_name.message}</p>
@@ -173,7 +173,7 @@ export default function RegisterPage() {
                 type="email"
                 {...register("email")}
                 className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3.5 py-2 text-sm"
-                placeholder="anish@company.com"
+                placeholder="name@company.com"
               />
               {errors.email && (
                 <p className="mt-1 text-xs text-rose-600">{errors.email.message}</p>
