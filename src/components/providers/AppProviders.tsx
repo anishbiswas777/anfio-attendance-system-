@@ -98,7 +98,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
           <div
             key={t.id}
             role="status"
-            className="pointer-events-auto flex items-start gap-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-lg"
+            className="pointer-events-auto flex items-start gap-3 rounded-xl border border-slate-200/80 dark:border-white/[0.1] bg-white dark:bg-[#0c0c12] p-4 shadow-2xl backdrop-blur-xs"
           >
             {t.variant === "success" && (
               <CheckCircle2 className="h-5 w-5 text-emerald-500 shrink-0 mt-0.5" />

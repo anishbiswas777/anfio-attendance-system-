@@ -11,7 +11,7 @@ export function Card({
   return (
     <div
       className={cn(
-        "rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs",
+        "rounded-2xl border border-slate-200/80 dark:border-white/[0.08] bg-white dark:bg-[#08080c] shadow-xs dark:shadow-[0_4px_24px_rgba(0,0,0,0.6)] transition-all",
         className
       )}
     >
@@ -34,12 +34,12 @@ export function CardHeader({
   return (
     <div
       className={cn(
-        "flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-slate-100 dark:border-slate-800 px-4 sm:px-5 py-3.5 sm:py-4",
+        "flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-slate-100 dark:border-white/[0.06] px-4 sm:px-5 py-3.5 sm:py-4",
         className
       )}
     >
-      <div>
-        <h3 className="text-base font-semibold text-slate-900 dark:text-slate-100">
+      <div className="min-w-0">
+        <h3 className="text-base font-semibold text-slate-900 dark:text-white truncate">
           {title}
         </h3>
         {description && (

@@ -32,18 +32,18 @@ export function Modal({
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/60 backdrop-blur-xs"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-xs"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-lg max-h-[92dvh] flex flex-col rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl overflow-hidden"
+        className="w-full max-w-lg max-h-[92dvh] flex flex-col rounded-2xl border border-slate-200/80 dark:border-white/[0.1] bg-white dark:bg-[#09090d] shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="shrink-0 flex items-start justify-between border-b border-slate-100 dark:border-slate-800 px-4 sm:px-5 py-3.5 sm:py-4">
+        <div className="shrink-0 flex items-start justify-between border-b border-slate-100 dark:border-white/[0.06] px-4 sm:px-5 py-3.5 sm:py-4">
           <div>
             <h2
               id="modal-title"
-              className="text-base font-semibold text-slate-900 dark:text-slate-100"
+              className="text-base font-semibold text-slate-900 dark:text-white"
             >
               {title}
             </h2>
@@ -57,7 +57,7 @@ export function Modal({
             type="button"
             onClick={onClose}
             aria-label="Close dialog"
-            className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-600 cursor-pointer"
+            className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 dark:hover:bg-white/[0.08] hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
           >
             <X className="h-4 w-4" />
           </button>

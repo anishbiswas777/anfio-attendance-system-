@@ -21,15 +21,15 @@ export function Button({
 }: ButtonProps) {
   const variants = {
     primary:
-      "bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500 shadow-sm",
+      "bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white hover:from-blue-500 hover:via-indigo-500 hover:to-blue-600 focus-visible:ring-indigo-500 shadow-sm shadow-indigo-500/25 active:scale-[0.99] border border-white/15",
     secondary:
-      "bg-slate-100 text-slate-900 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700",
+      "bg-slate-100 text-slate-900 hover:bg-slate-200 dark:bg-white/[0.06] dark:text-slate-100 dark:hover:bg-white/[0.1] dark:border dark:border-white/[0.08]",
     outline:
-      "border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800",
+      "border border-slate-300 dark:border-white/[0.12] bg-white dark:bg-white/[0.03] text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-white/[0.08] backdrop-blur-xs",
     danger:
-      "bg-rose-600 text-white hover:bg-rose-700 focus-visible:ring-rose-500 shadow-sm",
+      "bg-gradient-to-r from-rose-600 to-rose-700 text-white hover:from-rose-500 hover:to-rose-600 focus-visible:ring-rose-500 shadow-sm shadow-rose-500/20 active:scale-[0.99] border border-white/10",
     ghost:
-      "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800",
+      "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/[0.06]",
   };
 
   const sizes = {

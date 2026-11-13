@@ -247,7 +247,7 @@ export function LeaveClient({
                 )}
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label htmlFor="start_date" className="block text-sm font-medium mb-1">
                     Start Date *
@@ -256,7 +256,7 @@ export function LeaveClient({
                     id="start_date"
                     type="date"
                     {...register("start_date")}
-                    className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm"
+                    className="w-full rounded-xl border border-slate-300 dark:border-white/[0.1] bg-white dark:bg-[#0c0c12] px-3 py-2 text-sm text-slate-900 dark:text-white"
                   />
                 </div>
                 <div>
@@ -267,7 +267,7 @@ export function LeaveClient({
                     id="end_date"
                     type="date"
                     {...register("end_date")}
-                    className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm"
+                    className="w-full rounded-xl border border-slate-300 dark:border-white/[0.1] bg-white dark:bg-[#0c0c12] px-3 py-2 text-sm text-slate-900 dark:text-white"
                   />
                 </div>
               </div>
@@ -275,20 +275,20 @@ export function LeaveClient({
                 <p className="text-xs text-rose-600">{errors.end_date.message}</p>
               )}
 
-              <label className="flex items-center gap-2 text-sm cursor-pointer">
+              <label className="flex items-center gap-2 text-sm cursor-pointer select-none">
                 <input
                   type="checkbox"
                   {...register("is_half_day")}
-                  className="rounded border-slate-300"
+                  className="rounded border-slate-300 accent-indigo-600 dark:accent-indigo-500 h-4 w-4"
                 />
-                <span>Half-day leave</span>
+                <span className="text-slate-700 dark:text-slate-200">Half-day leave</span>
               </label>
 
-              <div className="rounded-xl bg-slate-50 dark:bg-slate-800/60 px-3.5 py-2.5 text-xs flex items-center justify-between">
+              <div className="rounded-xl bg-slate-50 dark:bg-white/[0.04] border border-slate-200/60 dark:border-white/[0.08] px-3.5 py-2.5 text-xs flex items-center justify-between">
                 <span className="text-slate-600 dark:text-slate-400">
                   Calculated Working Days:
                 </span>
-                <span className="font-bold text-slate-900 dark:text-white">
+                <span className="font-bold text-slate-900 dark:text-white text-sm">
                   {previewDays} day(s)
                 </span>
               </div>
@@ -302,7 +302,7 @@ export function LeaveClient({
                   rows={3}
                   {...register("reason")}
                   placeholder="Reason for leave..."
-                  className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm"
+                  className="w-full rounded-xl border border-slate-300 dark:border-white/[0.1] bg-white dark:bg-[#0c0c12] px-3 py-2 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600"
                 />
                 {errors.reason && (
                   <p className="mt-1 text-xs text-rose-600">{errors.reason.message}</p>
@@ -318,7 +318,7 @@ export function LeaveClient({
                   type="file"
                   accept="image/png,image/jpeg,image/webp,application/pdf"
                   onChange={(e) => setAttachmentFile(e.target.files?.[0] ?? null)}
-                  className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-1.5 text-xs"
+                  className="w-full rounded-xl border border-slate-300 dark:border-white/[0.1] bg-white dark:bg-[#0c0c12] px-3 py-1.5 text-xs text-slate-700 dark:text-slate-300"
                 />
               </div>
 
@@ -342,43 +342,51 @@ export function LeaveClient({
                 icon={<CalendarDays className="h-5 w-5" />}
               />
             ) : (
-              <div className="divide-y divide-slate-100 dark:divide-slate-800">
+              <div className="divide-y divide-slate-100 dark:divide-white/[0.06]">
                 {ownRequests.map((lr) => (
                   <div
                     key={lr.id}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4"
+                    className="flex flex-col gap-3 p-4 hover:bg-slate-50/50 dark:hover:bg-white/[0.02] transition-colors"
                   >
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-sm font-semibold text-slate-900 dark:text-white">
                           {lr.leave_type?.name || "Leave"}
                         </span>
-                        <span className="text-xs text-slate-500">
-                          {lr.start_date} to {lr.end_date} ({lr.total_days}d)
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 dark:bg-white/[0.06] text-xs font-mono text-slate-600 dark:text-slate-300 border border-slate-200/50 dark:border-white/[0.08]">
+                          {lr.start_date} → {lr.end_date} ({lr.total_days}d)
                         </span>
+                        {lr.is_half_day && (
+                          <span className="text-[11px] px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-500 border border-amber-500/20 font-medium">
+                            Half Day
+                          </span>
+                        )}
                       </div>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                      <div className="flex items-center justify-between sm:justify-end gap-2 shrink-0">
+                        <StatusBadge status={lr.status} />
+                        {lr.status === "PENDING" && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            loading={busyId === lr.id}
+                            onClick={() => handleCancel(lr.id)}
+                          >
+                            Cancel
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                    {lr.reason && (
+                      <p className="text-xs text-slate-600 dark:text-slate-400 bg-slate-50/80 dark:bg-white/[0.02] p-2.5 rounded-lg border border-slate-100 dark:border-white/[0.04]">
                         {lr.reason}
                       </p>
-                      {lr.rejection_reason && (
-                        <p className="text-xs text-rose-600 mt-1">
-                          Rejection reason: {lr.rejection_reason}
-                        </p>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <StatusBadge status={lr.status} />
-                      {lr.status === "PENDING" && (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          loading={busyId === lr.id}
-                          onClick={() => handleCancel(lr.id)}
-                        >
-                          Cancel
-                        </Button>
-                      )}
-                    </div>
+                    )}
+                    {lr.rejection_reason && (
+                      <p className="text-xs text-rose-500 bg-rose-500/10 border border-rose-500/20 p-2.5 rounded-lg">
+                        <span className="font-semibold">Rejection reason:</span>{" "}
+                        {lr.rejection_reason}
+                      </p>
+                    )}
                   </div>
                 ))}
               </div>
@@ -395,45 +403,59 @@ export function LeaveClient({
               title="Team Leave Requests"
               description="Review leave requests from your assigned team"
             />
-            <CardContent className="p-0 divide-y divide-slate-100 dark:divide-slate-800">
+            <CardContent className="p-0 divide-y divide-slate-100 dark:divide-white/[0.06]">
               {teamRequests.map((lr) => (
                 <div
                   key={lr.id}
-                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4"
+                  className="flex flex-col gap-3 p-4 hover:bg-slate-50/50 dark:hover:bg-white/[0.02] transition-colors"
                 >
-                  <div>
-                    <p className="text-sm font-semibold">
-                      {lr.employee?.full_name} — {lr.leave_type?.name}
-                    </p>
-                    <p className="text-xs text-slate-500">
-                      {lr.start_date} to {lr.end_date} ({lr.total_days} day(s))
-                    </p>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                          {lr.employee?.full_name}
+                        </span>
+                        <span className="text-xs text-slate-500 dark:text-slate-400">
+                          ({lr.employee?.employee_code || "EMP"})
+                        </span>
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 dark:bg-white/[0.06] text-xs font-mono text-slate-600 dark:text-slate-300 border border-slate-200/50 dark:border-white/[0.08]">
+                          {lr.leave_type?.name} • {lr.total_days}d
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                        {lr.start_date} to {lr.end_date}
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-between sm:justify-end gap-2 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100 dark:border-white/[0.06]">
+                      {lr.status === "PENDING" ? (
+                        <div className="flex items-center gap-2 w-full sm:w-auto">
+                          <Button
+                            size="sm"
+                            className="flex-1 sm:flex-initial"
+                            loading={busyId === lr.id}
+                            onClick={() => handleReview(lr.id, "APPROVED")}
+                          >
+                            Approve
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="danger"
+                            className="flex-1 sm:flex-initial"
+                            onClick={() => setRejectTarget(lr)}
+                          >
+                            Reject
+                          </Button>
+                        </div>
+                      ) : (
+                        <StatusBadge status={lr.status} />
+                      )}
+                    </div>
+                  </div>
+                  {lr.reason && (
+                    <p className="text-xs text-slate-600 dark:text-slate-400 bg-slate-50/80 dark:bg-white/[0.02] p-2.5 rounded-lg border border-slate-100 dark:border-white/[0.04]">
                       {lr.reason}
                     </p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {lr.status === "PENDING" ? (
-                      <>
-                        <Button
-                          size="sm"
-                          loading={busyId === lr.id}
-                          onClick={() => handleReview(lr.id, "APPROVED")}
-                        >
-                          Approve
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="danger"
-                          onClick={() => setRejectTarget(lr)}
-                        >
-                          Reject
-                        </Button>
-                      </>
-                    ) : (
-                      <StatusBadge status={lr.status} />
-                    )}
-                  </div>
+                  )}
                 </div>
               ))}
             </CardContent>

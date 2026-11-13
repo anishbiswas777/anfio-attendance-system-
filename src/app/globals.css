@@ -15,21 +15,64 @@
 }
 
 .dark {
-  --background: #090d16;
-  --foreground: #f1f5f9;
-  --card: #111827;
-  --card-foreground: #f1f5f9;
-  --muted: #1e293b;
+  --background: #000000;
+  --foreground: #f8fafc;
+  --card: #08080c;
+  --card-foreground: #f8fafc;
+  --muted: #111118;
   --muted-foreground: #94a3b8;
-  --border: #1e293b;
-  --primary: #3b82f6;
+  --border: rgba(255, 255, 255, 0.08);
+  --primary: #6366f1;
   --primary-foreground: #ffffff;
+
+  /* Luxury Obsidian Pitch-Black palette for all dark:slate utility classes */
+  --color-slate-950: #000000;
+  --color-slate-900: #08080c;
+  --color-slate-850: #0e0e14;
+  --color-slate-800: #14141e;
+  --color-slate-700: #222232;
+  --color-slate-600: #48485e;
+  --color-slate-500: #7e7e96;
+  --color-slate-400: #9e9eb6;
+  --color-slate-300: #c8c8dc;
+  --color-slate-200: #e8e8f2;
+  --color-slate-100: #f6f6fc;
+
+  color-scheme: dark;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Premium Form Input & Picker Enhancements in Dark Mode */
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="password"],
+.dark input[type="tel"],
+.dark input[type="date"],
+.dark input[type="number"],
+.dark select,
+.dark textarea {
+  background-color: #0c0c12 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #f8fafc !important;
+}
+
+.dark input:focus,
+.dark select:focus,
+.dark textarea:focus {
+  border-color: #6366f1 !important;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25) !important;
+  outline: none !important;
+}
+
+.dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.8;
+  cursor: pointer;
 }
 
 /* Custom Character Loader */
