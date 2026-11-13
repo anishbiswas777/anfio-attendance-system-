@@ -150,7 +150,7 @@ export function AttendanceCalendarClient({
             ))}
           </div>
 
-          <div className="grid grid-cols-7 gap-1.5 text-center text-xs font-semibold text-slate-500 mb-2">
+          <div className="grid grid-cols-7 gap-1 sm:gap-1.5 text-center text-[11px] sm:text-xs font-semibold text-slate-500 mb-2">
             {WEEKDAYS.map((w) => (
               <div key={w} className="py-1">
                 {w}
@@ -158,9 +158,9 @@ export function AttendanceCalendarClient({
             ))}
           </div>
 
-          <div className="grid grid-cols-7 gap-1.5">
+          <div className="grid grid-cols-7 gap-1 sm:gap-1.5">
             {Array.from({ length: leadingBlanks }).map((_, i) => (
-              <div key={`blank-${i}`} className="h-16 sm:h-20 rounded-xl bg-slate-50/50 dark:bg-slate-900/30" />
+              <div key={`blank-${i}`} className="h-12 sm:h-20 rounded-lg sm:rounded-xl bg-slate-50/50 dark:bg-slate-900/30" />
             ))}
 
             {Array.from({ length: daysInMonth }).map((_, idx) => {
@@ -182,19 +182,19 @@ export function AttendanceCalendarClient({
                   key={dateStr}
                   type="button"
                   onClick={() => setSelectedDate(dateStr)}
-                  className={`h-16 sm:h-20 rounded-xl border p-1.5 sm:p-2 flex flex-col items-start justify-between text-left transition-colors cursor-pointer ${
+                  className={`h-12 sm:h-20 rounded-lg sm:rounded-xl border p-1 sm:p-2 flex flex-col items-start justify-between text-left transition-colors cursor-pointer ${
                     dateStr === todayStr
                       ? "border-blue-500 bg-blue-50/40 dark:bg-blue-950/30"
                       : "border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60"
                   }`}
                 >
-                  <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                  <span className="text-[11px] sm:text-xs font-semibold text-slate-800 dark:text-slate-200">
                     {day}
                   </span>
                   {effectiveStatus ? (
                     <span className="inline-flex items-center gap-1 text-[10px] font-medium">
                       <span
-                        className={`h-2 w-2 rounded-full ${
+                        className={`h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full ${
                           DOT_COLOR[effectiveStatus] ?? "bg-slate-400"
                         }`}
                       />
@@ -203,7 +203,7 @@ export function AttendanceCalendarClient({
                       </span>
                     </span>
                   ) : weekend ? (
-                    <span className="text-[10px] text-slate-400">Off</span>
+                    <span className="text-[10px] text-slate-400 hidden xs:inline">Off</span>
                   ) : null}
                 </button>
               );
@@ -226,16 +226,16 @@ export function AttendanceCalendarClient({
               icon={<CalendarIcon className="h-5 w-5" />}
             />
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
+            <div className="overflow-x-auto touch-scroll">
+              <table className="w-full text-left text-sm min-w-[550px]">
                 <thead className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 text-xs uppercase text-slate-500">
                   <tr>
-                    <th className="px-4 py-3">Date</th>
-                    <th className="px-4 py-3">Check In</th>
-                    <th className="px-4 py-3">Check Out</th>
-                    <th className="px-4 py-3">Working Hours</th>
-                    <th className="px-4 py-3">Late</th>
-                    <th className="px-4 py-3">Status</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Date</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Check In</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Check Out</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Working Hours</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Late</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Status</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
@@ -244,20 +244,20 @@ export function AttendanceCalendarClient({
                       key={r.id}
                       className="hover:bg-slate-50 dark:hover:bg-slate-800/40"
                     >
-                      <td className="px-4 py-3 font-medium">{r.attendance_date}</td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 font-medium whitespace-nowrap">{r.attendance_date}</td>
+                      <td className="px-4 py-3 whitespace-nowrap">
                         {formatOfficeTime(r.check_in, settings.timezone)}
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         {formatOfficeTime(r.check_out, settings.timezone)}
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         {formatWorkingHours(r.working_minutes)}
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         {r.late_minutes > 0 ? `${r.late_minutes}m` : "—"}
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 whitespace-nowrap">
                         <StatusBadge status={r.status} />
                       </td>
                     </tr>

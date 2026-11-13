@@ -86,16 +86,16 @@ export function RegistrationsClient({
               icon={<UserCheck className="h-5 w-5" />}
             />
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
+            <div className="overflow-x-auto touch-scroll">
+              <table className="w-full text-left text-sm min-w-[620px]">
                 <thead className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 text-xs uppercase text-slate-500">
                   <tr>
-                    <th className="px-4 py-3">Name</th>
-                    <th className="px-4 py-3">Employee ID</th>
-                    <th className="px-4 py-3">Department</th>
-                    <th className="px-4 py-3">Joining Date</th>
-                    <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3 text-right">Actions</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Name</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Employee ID</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Department</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Joining Date</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Status</th>
+                    <th className="px-4 py-3 whitespace-nowrap text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">

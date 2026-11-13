@@ -34,7 +34,7 @@ export function CardHeader({
   return (
     <div
       className={cn(
-        "flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between border-b border-slate-100 dark:border-slate-800 px-5 py-4",
+        "flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-slate-100 dark:border-slate-800 px-4 sm:px-5 py-3.5 sm:py-4",
         className
       )}
     >
@@ -48,7 +48,7 @@ export function CardHeader({
           </p>
         )}
       </div>
-      {action && <div className="mt-2 sm:mt-0">{action}</div>}
+      {action && <div className="mt-1 sm:mt-0 flex-shrink-0">{action}</div>}
     </div>
   );
 }
@@ -60,5 +60,5 @@ export function CardContent({
   className?: string;
   children: React.ReactNode;
 }) {
-  return <div className={cn("p-5", className)}>{children}</div>;
+  return <div className={cn("p-4 sm:p-5", className)}>{children}</div>;
 }

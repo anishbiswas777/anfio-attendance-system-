@@ -101,17 +101,17 @@ export function AdminLeaveClient({
               icon={<CalendarDays className="h-5 w-5" />}
             />
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
+            <div className="overflow-x-auto touch-scroll">
+              <table className="w-full text-left text-sm min-w-[650px]">
                 <thead className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 text-xs uppercase text-slate-500">
                   <tr>
-                    <th className="px-4 py-3">Employee</th>
-                    <th className="px-4 py-3">Type</th>
-                    <th className="px-4 py-3">Dates</th>
-                    <th className="px-4 py-3">Days</th>
-                    <th className="px-4 py-3">Reason</th>
-                    <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3 text-right">Actions</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Employee</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Type</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Dates</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Days</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Reason</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Status</th>
+                    <th className="px-4 py-3 whitespace-nowrap text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">

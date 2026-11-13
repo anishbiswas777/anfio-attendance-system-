@@ -155,19 +155,19 @@ export function AdminAttendanceClient({
         <CardHeader
           title={`Attendance Logs (${filtered.length})`}
           action={
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:w-auto">
               <input
                 type="date"
                 value={dateFilter}
                 onChange={(e) => setDateFilter(e.target.value)}
                 aria-label="Filter by date"
-                className="rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-1.5 text-sm"
+                className="w-full sm:w-auto rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-1.5 text-sm"
               />
               <select
                 value={employeeFilter}
                 onChange={(e) => setEmployeeFilter(e.target.value)}
                 aria-label="Filter by employee"
-                className="rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-1.5 text-sm"
+                className="w-full sm:w-auto rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-1.5 text-sm"
               >
                 <option value="">All Employees</option>
                 {employees.map((e) => (
@@ -187,17 +187,17 @@ export function AdminAttendanceClient({
               icon={<Clock className="h-5 w-5" />}
             />
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
+            <div className="overflow-x-auto touch-scroll">
+              <table className="w-full text-left text-sm min-w-[650px]">
                 <thead className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 text-xs uppercase text-slate-500">
                   <tr>
-                    <th className="px-4 py-3">Employee</th>
-                    <th className="px-4 py-3">Date</th>
-                    <th className="px-4 py-3">Check In</th>
-                    <th className="px-4 py-3">Check Out</th>
-                    <th className="px-4 py-3">Hours</th>
-                    <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3 text-right">Action</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Employee</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Date</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Check In</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Check Out</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Hours</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Status</th>
+                    <th className="px-4 py-3 whitespace-nowrap text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">

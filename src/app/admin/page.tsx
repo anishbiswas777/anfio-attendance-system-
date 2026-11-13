@@ -148,11 +148,15 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* KPI Grid */}
-        <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
-          {kpis.map((kpi) => (
-            <Link key={kpi.label} href={kpi.href}>
-              <Card className="hover:border-blue-400 transition-colors">
-                <CardContent className="p-4">
+        <div className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+          {kpis.map((kpi, idx) => (
+            <Link
+              key={kpi.label}
+              href={kpi.href}
+              className={idx === 4 ? "col-span-2 sm:col-span-1" : ""}
+            >
+              <Card className="hover:border-blue-400 transition-colors h-full">
+                <CardContent className="p-3.5 sm:p-4">
                   <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
                     {kpi.label}
                   </p>

@@ -174,7 +174,7 @@ export function ReportsClient({
                 ))}
               </select>
             </div>
-            <Button onClick={loadReport} loading={loading}>
+            <Button onClick={loadReport} loading={loading} className="w-full sm:w-auto">
               Generate Report
             </Button>
           </div>
@@ -186,16 +186,16 @@ export function ReportsClient({
           title={`Results (${rows.length})`}
           action={
             rows.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                <Button size="sm" variant="outline" onClick={exportCsv}>
+              <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+                <Button size="sm" variant="outline" onClick={exportCsv} className="flex-1 sm:flex-none">
                   <Download className="h-3.5 w-3.5" />
                   CSV
                 </Button>
-                <Button size="sm" variant="outline" onClick={exportExcel}>
+                <Button size="sm" variant="outline" onClick={exportExcel} className="flex-1 sm:flex-none">
                   <FileSpreadsheet className="h-3.5 w-3.5" />
                   Excel
                 </Button>
-                <Button size="sm" variant="outline" onClick={exportPdf}>
+                <Button size="sm" variant="outline" onClick={exportPdf} className="flex-1 sm:flex-none">
                   <FileText className="h-3.5 w-3.5" />
                   PDF
                 </Button>
@@ -210,8 +210,8 @@ export function ReportsClient({
               description="Select your filters and click Generate Report."
             />
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
+            <div className="overflow-x-auto touch-scroll">
+              <table className="w-full text-left text-sm min-w-[500px]">
                 <thead className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 text-xs uppercase text-slate-500">
                   <tr>
                     {columns.map((col) => (

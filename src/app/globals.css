@@ -146,3 +146,23 @@ body {
     stroke-dashoffset: -351.86;
   }
 }
+
+/* Mobile & Touch Responsive Enhancements */
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .pb-safe {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 1rem);
+  }
+  .bottom-safe {
+    bottom: env(safe-area-inset-bottom);
+  }
+}
+
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}

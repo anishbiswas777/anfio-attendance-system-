@@ -245,15 +245,27 @@ export function AppShell({
       {/* Mobile Drawer */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-50 lg:hidden bg-slate-950/60 backdrop-blur-xs"
+          className="fixed inset-0 z-50 lg:hidden bg-slate-950/60 backdrop-blur-xs transition-opacity duration-300"
           onClick={() => setMobileOpen(false)}
         >
           <div
-            className="fixed inset-y-0 left-0 w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col"
+            className="fixed inset-y-0 left-0 w-72 sm:w-80 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col shadow-2xl transition-transform duration-300 ease-out"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex h-16 items-center justify-between border-b border-slate-100 dark:border-slate-800 px-4">
-              <span className="text-sm font-bold">Anfio HRMS</span>
+            <div className="flex h-16 items-center justify-between border-b border-slate-100 dark:border-slate-800 px-5">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 text-white font-bold text-sm">
+                  A
+                </div>
+                <div>
+                  <p className="text-sm font-bold tracking-tight text-slate-900 dark:text-white">
+                    Anfio HRMS
+                  </p>
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400">
+                    Attendance & Team
+                  </p>
+                </div>
+              </div>
               <button
                 type="button"
                 onClick={() => setMobileOpen(false)}
@@ -263,7 +275,28 @@ export function AppShell({
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-6">
+
+            {/* Profile snippet in drawer */}
+            <div className="p-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/30">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 font-semibold text-sm shrink-0">
+                  {profile.full_name.charAt(0).toUpperCase()}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-xs font-semibold text-slate-900 dark:text-slate-100">
+                    {profile.full_name}
+                  </p>
+                  <p className="truncate text-[11px] text-slate-500">
+                    {profile.employee_code || profile.email}
+                  </p>
+                  <div className="mt-1">
+                    <StatusBadge status={profile.role} className="text-[10px] px-1.5 py-0" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-6 touch-scroll">
               {profile.role === "ADMIN" ? (
                 <>
                   <div className="space-y-1">
@@ -283,15 +316,15 @@ export function AppShell({
                 <div className="space-y-1">{renderNavList(EMPLOYEE_NAV)}</div>
               )}
             </nav>
-            <div className="border-t border-slate-100 dark:border-slate-800 p-3">
+            <div className="border-t border-slate-100 dark:border-slate-800 p-3 pb-safe">
               <button
                 type="button"
                 onClick={handleLogout}
                 disabled={loggingOut}
-                className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 px-3 py-2 text-xs font-medium"
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 px-3 py-2.5 text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
               >
                 <LogOut className="h-4 w-4" />
-                Sign out
+                {loggingOut ? "Signing out..." : "Sign out"}
               </button>
             </div>
           </div>
@@ -301,26 +334,26 @@ export function AppShell({
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col lg:pl-64 min-w-0">
         {/* Top Bar */}
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-4 sm:px-6">
-          <div className="flex items-center gap-3">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-3 sm:px-6">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <button
               type="button"
               onClick={() => setMobileOpen(true)}
               aria-label="Open navigation menu"
-              className="lg:hidden rounded-lg p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="lg:hidden rounded-lg p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer"
             >
               <Menu className="h-5 w-5" />
             </button>
-            <div className="hidden sm:flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
-              <span>Anfio</span>
-              <ChevronRight className="h-3.5 w-3.5" />
-              <span className="font-medium text-slate-800 dark:text-slate-200 capitalize">
-                {pathname.split("/").filter(Boolean).join(" / ") || "Dashboard"}
+            <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 min-w-0">
+              <span className="hidden sm:inline font-semibold text-slate-900 dark:text-white">Anfio</span>
+              <ChevronRight className="hidden sm:inline h-3.5 w-3.5 text-slate-400" />
+              <span className="font-semibold text-slate-900 dark:text-white sm:font-medium sm:text-slate-800 dark:sm:text-slate-200 capitalize truncate text-sm sm:text-xs">
+                {pathname.split("/").filter(Boolean).slice(-1)[0]?.replace(/-/g, " ") || "Dashboard"}
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1 sm:gap-2">
             <button
               type="button"
               onClick={toggleTheme}
@@ -337,6 +370,7 @@ export function AppShell({
             <Link
               href="/notifications"
               aria-label="Notifications"
+              prefetch={true}
               className="relative rounded-lg p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               <Bell className="h-4 w-4" />
@@ -349,38 +383,41 @@ export function AppShell({
 
             <Link
               href="/profile"
-              className="hidden sm:flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-slate-100 dark:hover:bg-slate-800"
+              aria-label="My Profile"
+              prefetch={true}
+              className="flex items-center gap-2 rounded-lg p-1 sm:px-2.5 sm:py-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
             >
-              <span className="text-xs font-medium text-slate-700 dark:text-slate-200">
-                {profile.employee_code || profile.full_name}
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300 font-bold text-xs shrink-0">
+                {profile.full_name.charAt(0).toUpperCase()}
+              </div>
+              <span className="hidden sm:inline text-xs font-medium text-slate-700 dark:text-slate-200 max-w-[120px] truncate">
+                {profile.employee_code || profile.full_name.split(" ")[0]}
               </span>
             </Link>
           </div>
         </header>
 
-        <main className="flex-1 px-4 py-6 sm:px-6 lg:px-8 pb-24 lg:pb-8 max-w-7xl w-full mx-auto">
+        <main className="flex-1 px-3 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 pb-28 lg:pb-8 max-w-7xl w-full mx-auto min-w-0">
           {children}
         </main>
 
         {/* Mobile Bottom Navigation */}
         <nav
           aria-label="Mobile Bottom Navigation"
-          className="fixed bottom-0 inset-x-0 z-30 lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md grid grid-cols-5 h-16"
+          className="fixed bottom-0 inset-x-0 z-30 lg:hidden border-t border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md grid grid-cols-5 h-16 pb-safe"
         >
           {(profile.role === "ADMIN"
             ? [
                 { label: "Admin", href: "/admin", icon: ShieldCheck },
                 { label: "Approve", href: "/admin/registrations", icon: UserCheck },
+                { label: "Attendance", href: "/admin/attendance", icon: Clock },
                 { label: "Leave", href: "/admin/leave", icon: CalendarDays },
-                { label: "Staff", href: "/admin/employees", icon: Users },
-                { label: "Alerts", href: "/notifications", icon: Bell },
               ]
             : [
                 { label: "Home", href: "/dashboard", icon: LayoutDashboard },
                 { label: "Attend", href: "/attendance", icon: Clock },
                 { label: "Leave", href: "/leave", icon: CalendarDays },
                 { label: "Team", href: "/team", icon: Users },
-                { label: "Alerts", href: "/notifications", icon: Bell },
               ]
           ).map((item) => {
             const Icon = item.icon;
@@ -396,20 +433,30 @@ export function AppShell({
                   }
                 }}
                 className={cn(
-                  "flex flex-col items-center justify-center gap-1 text-[11px] font-medium relative",
+                  "flex flex-col items-center justify-center gap-1 text-[11px] font-medium relative transition-colors",
                   active
-                    ? "text-blue-600 dark:text-blue-400"
-                    : "text-slate-500 dark:text-slate-400"
+                    ? "text-blue-600 dark:text-blue-400 font-semibold"
+                    : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
                 )}
               >
                 <Icon className="h-4 w-4" />
-                <span>{item.label}</span>
-                {item.href === "/notifications" && unreadNotifications > 0 && (
-                  <span className="absolute top-1.5 right-4 h-2 w-2 rounded-full bg-blue-600" />
+                <span className="truncate max-w-[60px]">{item.label}</span>
+                {item.href === "/admin/registrations" && pendingRegistrations > 0 && (
+                  <span className="absolute top-1.5 right-4 h-2 w-2 rounded-full bg-amber-500" />
                 )}
               </Link>
             );
           })}
+
+          {/* 5th item: More / Menu drawer trigger */}
+          <button
+            type="button"
+            onClick={() => setMobileOpen(true)}
+            className="flex flex-col items-center justify-center gap-1 text-[11px] font-medium text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer"
+          >
+            <Menu className="h-4 w-4" />
+            <span>More</span>
+          </button>
         </nav>
       </div>
     </div>

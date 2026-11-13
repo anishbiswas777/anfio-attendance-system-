@@ -137,8 +137,8 @@ export function EmployeesClient({
         <CardHeader
           title={`Employees (${filtered.length})`}
           action={
-            <div className="flex flex-wrap gap-2">
-              <div className="relative">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:w-auto">
+              <div className="relative w-full sm:w-56">
                 <Search className="h-4 w-4 text-slate-400 absolute left-3 top-2.5" />
                 <input
                   type="text"
@@ -148,7 +148,7 @@ export function EmployeesClient({
                     setPage(1);
                   }}
                   placeholder="Search name, email, ID..."
-                  className="rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 pl-9 pr-3 py-1.5 text-sm"
+                  className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 pl-9 pr-3 py-1.5 text-sm"
                 />
               </div>
               <select
@@ -157,7 +157,7 @@ export function EmployeesClient({
                   setDeptFilter(e.target.value);
                   setPage(1);
                 }}
-                className="rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-1.5 text-sm"
+                className="w-full sm:w-auto rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-1.5 text-sm"
               >
                 <option value="">All Departments</option>
                 {departments.map((d) => (
@@ -172,7 +172,7 @@ export function EmployeesClient({
                   setStatusFilter(e.target.value);
                   setPage(1);
                 }}
-                className="rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-1.5 text-sm"
+                className="w-full sm:w-auto rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-1.5 text-sm"
               >
                 <option value="">All Statuses</option>
                 <option value="ACTIVE">Active</option>
@@ -191,16 +191,16 @@ export function EmployeesClient({
               icon={<Users className="h-5 w-5" />}
             />
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
+            <div className="overflow-x-auto touch-scroll">
+              <table className="w-full text-left text-sm min-w-[640px]">
                 <thead className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 text-xs uppercase text-slate-500">
                   <tr>
-                    <th className="px-4 py-3">Employee</th>
-                    <th className="px-4 py-3">ID</th>
-                    <th className="px-4 py-3">Department</th>
-                    <th className="px-4 py-3">Role</th>
-                    <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3 text-right">Action</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Employee</th>
+                    <th className="px-4 py-3 whitespace-nowrap">ID</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Department</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Role</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Status</th>
+                    <th className="px-4 py-3 whitespace-nowrap text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">

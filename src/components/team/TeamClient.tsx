@@ -56,8 +56,8 @@ export function TeamClient({
         <CardHeader
           title={`Team Members (${filtered.length})`}
           action={
-            <div className="flex flex-wrap gap-2">
-              <div className="relative">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-2 w-full sm:w-auto">
+              <div className="relative w-full sm:w-56">
                 <Search className="h-4 w-4 text-slate-400 absolute left-3 top-2.5" />
                 <input
                   type="text"
@@ -65,14 +65,14 @@ export function TeamClient({
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search team..."
                   aria-label="Search team members"
-                  className="rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 pl-9 pr-3 py-1.5 text-sm"
+                  className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 pl-9 pr-3 py-1.5 text-sm"
                 />
               </div>
               <select
                 value={departmentFilter}
                 onChange={(e) => setDepartmentFilter(e.target.value)}
                 aria-label="Filter by department"
-                className="rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-1.5 text-sm"
+                className="w-full sm:w-auto rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-1.5 text-sm"
               >
                 <option value="">All Departments</option>
                 {departments.map((d) => (
@@ -92,17 +92,17 @@ export function TeamClient({
               icon={<Users className="h-5 w-5" />}
             />
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
+            <div className="overflow-x-auto touch-scroll">
+              <table className="w-full text-left text-sm min-w-[550px]">
                 <thead className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 text-xs uppercase text-slate-500">
                   <tr>
-                    <th className="px-4 py-3">Employee</th>
-                    <th className="px-4 py-3">Department</th>
-                    <th className="px-4 py-3">Status</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Employee</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Department</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Status</th>
                     {settings.team_show_checkin_time && (
-                      <th className="px-4 py-3">Check In</th>
+                      <th className="px-4 py-3 whitespace-nowrap">Check In</th>
                     )}
-                    <th className="px-4 py-3">Notes</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Notes</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">

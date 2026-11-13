@@ -119,15 +119,15 @@ export function DepartmentsClient({
               icon={<Building2 className="h-5 w-5" />}
             />
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
+            <div className="overflow-x-auto touch-scroll">
+              <table className="w-full text-left text-sm min-w-[550px]">
                 <thead className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 text-xs uppercase text-slate-500">
                   <tr>
-                    <th className="px-4 py-3">Name</th>
-                    <th className="px-4 py-3">Description</th>
-                    <th className="px-4 py-3">Manager</th>
-                    <th className="px-4 py-3">Status</th>
-                    <th className="px-4 py-3 text-right">Action</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Name</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Description</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Manager</th>
+                    <th className="px-4 py-3 whitespace-nowrap">Status</th>
+                    <th className="px-4 py-3 whitespace-nowrap text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">

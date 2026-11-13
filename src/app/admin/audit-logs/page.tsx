@@ -52,15 +52,15 @@ export default async function AdminAuditLogsPage() {
                 description="Sensitive actions will be recorded here."
               />
             ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs sm:text-sm">
+              <div className="overflow-x-auto touch-scroll">
+                <table className="w-full text-left text-xs sm:text-sm min-w-[650px]">
                   <thead className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 text-xs uppercase text-slate-500">
                     <tr>
-                      <th className="px-4 py-3">Timestamp</th>
-                      <th className="px-4 py-3">Actor</th>
-                      <th className="px-4 py-3">Action</th>
-                      <th className="px-4 py-3">Entity</th>
-                      <th className="px-4 py-3">Details</th>
+                      <th className="px-4 py-3 whitespace-nowrap">Timestamp</th>
+                      <th className="px-4 py-3 whitespace-nowrap">Actor</th>
+                      <th className="px-4 py-3 whitespace-nowrap">Action</th>
+                      <th className="px-4 py-3 whitespace-nowrap">Entity</th>
+                      <th className="px-4 py-3 whitespace-nowrap">Details</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800">

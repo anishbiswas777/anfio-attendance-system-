@@ -309,16 +309,16 @@ export function EmployeeDashboardClient({
       </div>
 
       {/* Monthly Stats */}
-      <div className="grid gap-4 grid-cols-2 sm:grid-cols-5">
+      <div className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
         {[
           { label: "Present (Month)", value: monthlyStats.present, tone: "text-emerald-600" },
           { label: "Late (Month)", value: monthlyStats.late, tone: "text-amber-600" },
           { label: "Leave (Month)", value: monthlyStats.leave, tone: "text-sky-600" },
           { label: "Absent (Month)", value: monthlyStats.absent, tone: "text-rose-600" },
           { label: "Attendance %", value: `${monthlyStats.attendanceRate}%`, tone: "text-blue-600" },
-        ].map((stat) => (
-          <Card key={stat.label}>
-            <CardContent className="p-4">
+        ].map((stat, idx) => (
+          <Card key={stat.label} className={idx === 4 ? "col-span-2 sm:col-span-1" : ""}>
+            <CardContent className="p-3.5 sm:p-4">
               <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
                 {stat.label}
               </p>
