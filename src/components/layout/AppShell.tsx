@@ -31,6 +31,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useApp } from "@/components/providers/AppProviders";
 import { cn } from "@/lib/utils";
 import { StatusBadge } from "@/components/ui/Badge";
+import { Spinner } from "@/components/ui/Spinner";
 import type { Profile } from "@/types/database";
 
 interface NavItem {
@@ -141,7 +142,7 @@ export function AppShell({
         >
           <span className="flex items-center gap-2.5">
             {isNavigating ? (
-              <Loader2 className="h-4 w-4 shrink-0 animate-spin text-blue-600 dark:text-blue-400" />
+              <Spinner size="sm" />
             ) : (
               <Icon className="h-4 w-4 shrink-0" />
             )}

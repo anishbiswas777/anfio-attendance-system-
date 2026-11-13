@@ -1,4 +1,4 @@
-import { Loader2 } from "lucide-react";
+import { Spinner } from "@/components/ui/Spinner";
 
 export default function AdminLoading() {
   return (
@@ -16,7 +16,7 @@ export default function AdminLoading() {
         ))}
       </div>
       <div className="h-72 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 flex flex-col items-center justify-center gap-3">
-        <Loader2 className="h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
+        <Spinner size="lg" />
         <span className="text-xs text-slate-500 animate-pulse">Loading admin data...</span>
       </div>
     </div>

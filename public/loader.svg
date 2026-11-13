@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <rect x="45" y="12" width="10" height="24" rx="5" fill="#ECF2FF" transform="rotate(0 50 50)" />
+  <rect x="45" y="12" width="10" height="24" rx="5" fill="#D8E4FF" transform="rotate(30 50 50)" />
+  <rect x="45" y="12" width="10" height="24" rx="5" fill="#C4D6FE" transform="rotate(60 50 50)" />
+  <rect x="45" y="12" width="10" height="24" rx="5" fill="#B1C9FE" transform="rotate(90 50 50)" />
+  <rect x="45" y="12" width="10" height="24" rx="5" fill="#9EBCFE" transform="rotate(120 50 50)" />
+  <rect x="45" y="12" width="10" height="24" rx="5" fill="#89ADFD" transform="rotate(150 50 50)" />
+  <rect x="45" y="12" width="10" height="24" rx="5" fill="#76A0FD" transform="rotate(180 50 50)" />
+  <rect x="45" y="12" width="10" height="24" rx="5" fill="#6393FD" transform="rotate(210 50 50)" />
+  <rect x="45" y="12" width="10" height="24" rx="5" fill="#5086FD" transform="rotate(240 50 50)" />
+  <rect x="45" y="12" width="10" height="24" rx="5" fill="#3C78FD" transform="rotate(270 50 50)" />
+  <rect x="45" y="12" width="10" height="24" rx="5" fill="#286AFC" transform="rotate(300 50 50)" />
+  <rect x="45" y="12" width="10" height="24" rx="5" fill="#155DFC" transform="rotate(330 50 50)" />
+</svg>
