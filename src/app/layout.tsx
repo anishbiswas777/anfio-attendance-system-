@@ -42,6 +42,54 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  // 1. Create a dummy hidden marker so the Netlify HUD script bails out immediately
+                  if (!document.getElementById("nl-badge-frame")) {
+                    var d = document.createElement("div");
+                    d.id = "nl-badge-frame";
+                    d.style.cssText = "display:none!important;visibility:hidden!important;width:0!important;height:0!important;position:fixed!important;top:-99999px!important;";
+                    if (document.documentElement) {
+                      document.documentElement.appendChild(d);
+                    }
+                  }
+                  // 2. Pre-populate Netlify HUD dismissal state in localStorage
+                  var future = Date.now() + 600000000;
+                  localStorage.setItem("nl-hud:public:v1", "hidden:" + future);
+                  localStorage.setItem("nl-hud:owner-private:v1", "hidden");
+                } catch (e) {}
+
+                // 3. Neutralize any Netlify HUD script or iframe if appended
+                var neutralize = function(node) {
+                  if (!node || node.nodeType !== 1) return;
+                  if (node.tagName === "SCRIPT" && (node.src && node.src.indexOf("/.netlify/scripts/hud") !== -1 || node.hasAttribute("data-nf-variant"))) {
+                    node.removeAttribute("data-nf-variant");
+                    if (node.dataset) {
+                      delete node.dataset.nfVariant;
+                      node.dataset.accountTier = "pro";
+                    }
+                  }
+                  if (node.tagName === "IFRAME" && (node.id === "nl-badge-frame" || (node.id && node.id.indexOf("nl-") === 0) || node.hasAttribute("data-nl-ready"))) {
+                    node.remove();
+                  }
+                };
+
+                var obs = new MutationObserver(function(mutations) {
+                  for (var i = 0; i < mutations.length; i++) {
+                    var added = mutations[i].addedNodes;
+                    for (var j = 0; j < added.length; j++) {
+                      neutralize(added[j]);
+                    }
+                  }
+                });
+                obs.observe(document.documentElement, { childList: true, subtree: true });
+              })();
+            `,
+          }}
+        />
         <style
           dangerouslySetInnerHTML={{
             __html: `

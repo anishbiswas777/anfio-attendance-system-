@@ -1,0 +1,2 @@
+// Netlify HUD suppressor
+(() => {})();
