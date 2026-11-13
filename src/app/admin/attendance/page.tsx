@@ -10,11 +10,11 @@ import type { AttendanceRecord, Profile } from "@/types/database";
 export default async function AdminAttendancePage() {
   const profile = await requireAdmin();
   const settings = await getOfficeSettings();
-  const { unreadNotifications, pendingRegistrations } = await getShellCounts(profile);
   const todayStr = getOfficeDateString(new Date(), settings.timezone);
 
   const admin = createAdminClient();
-  const [{ data: records }, { data: employees }] = await Promise.all([
+  const [{ unreadNotifications, pendingRegistrations }, { data: records }, { data: employees }] = await Promise.all([
+    getShellCounts(profile),
     admin
       .from("attendance")
       .select(

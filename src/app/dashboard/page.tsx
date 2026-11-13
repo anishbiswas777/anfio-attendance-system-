@@ -21,7 +21,6 @@ export default async function DashboardPage() {
     redirect("/admin");
   }
   const settings = await getOfficeSettings();
-  const { unreadNotifications, pendingRegistrations } = await getShellCounts(profile);
 
   const now = new Date();
   const todayStr = getOfficeDateString(now, settings.timezone);
@@ -40,6 +39,7 @@ export default async function DashboardPage() {
   const supabase = await createClient();
 
   const [
+    { unreadNotifications, pendingRegistrations },
     { data: todayAttendance },
     { data: holidayToday },
     { data: monthAttendance },
@@ -48,6 +48,7 @@ export default async function DashboardPage() {
     { data: notifications },
     { data: teamOverview },
   ] = await Promise.all([
+    getShellCounts(profile),
     supabase
       .from("attendance")
       .select("*")

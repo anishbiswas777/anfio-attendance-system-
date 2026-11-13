@@ -12,16 +12,18 @@ import type { AuditLog } from "@/types/database";
 export default async function AdminAuditLogsPage() {
   const profile = await requireAdmin();
   const settings = await getOfficeSettings();
-  const { unreadNotifications, pendingRegistrations } = await getShellCounts(profile);
 
   const admin = createAdminClient();
-  const { data } = await admin
-    .from("audit_logs")
-    .select(
-      "*, actor:profiles!audit_logs_actor_id_fkey(id, full_name, email, role)"
-    )
-    .order("created_at", { ascending: false })
-    .limit(150);
+  const [{ unreadNotifications, pendingRegistrations }, { data }] = await Promise.all([
+    getShellCounts(profile),
+    admin
+      .from("audit_logs")
+      .select(
+        "*, actor:profiles!audit_logs_actor_id_fkey(id, full_name, email, role)"
+      )
+      .order("created_at", { ascending: false })
+      .limit(150),
+  ]);
 
   const logs = (data as AuditLog[]) ?? [];
 

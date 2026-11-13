@@ -10,13 +10,15 @@ import type { TeamOverviewMember } from "@/types/database";
 export default async function TeamPage() {
   const profile = await requireActiveUser();
   const settings = await getOfficeSettings();
-  const { unreadNotifications, pendingRegistrations } = await getShellCounts(profile);
   const todayStr = getOfficeDateString(new Date(), settings.timezone);
 
   const supabase = await createClient();
-  const { data } = await supabase.rpc("get_team_overview", {
-    target_date: todayStr,
-  });
+  const [{ unreadNotifications, pendingRegistrations }, { data }] = await Promise.all([
+    getShellCounts(profile),
+    supabase.rpc("get_team_overview", {
+      target_date: todayStr,
+    }),
+  ]);
 
   return (
     <AppShell

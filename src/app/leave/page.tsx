@@ -14,46 +14,50 @@ export default async function LeavePage() {
     redirect("/admin/leave");
   }
   const settings = await getOfficeSettings();
-  const { unreadNotifications, pendingRegistrations } = await getShellCounts(profile);
   const todayStr = getOfficeDateString(new Date(), settings.timezone);
 
   const supabase = await createClient();
 
-  const [{ data: leaveTypes }, { data: ownRequests }, { data: holidays }] =
-    await Promise.all([
-      supabase
-        .from("leave_types")
-        .select("*")
-        .eq("is_active", true)
-        .order("name", { ascending: true }),
-      supabase
-        .from("leave_requests")
-        .select("*, leave_type:leave_types(*)")
-        .eq("employee_id", profile.id)
-        .order("created_at", { ascending: false })
-        .limit(100),
-      supabase
-        .from("holidays")
-        .select("*")
-        .order("holiday_date", { ascending: true }),
-    ]);
-
-  let teamRequests: LeaveRequest[] = [];
-  if (profile.role === "MANAGER") {
-    const { data } = await supabase
+  const [
+    { unreadNotifications, pendingRegistrations },
+    { data: leaveTypes },
+    { data: ownRequests },
+    { data: holidays },
+    teamResult,
+  ] = await Promise.all([
+    getShellCounts(profile),
+    supabase
+      .from("leave_types")
+      .select("*")
+      .eq("is_active", true)
+      .order("name", { ascending: true }),
+    supabase
       .from("leave_requests")
-      .select(
-        `
-        *,
-        leave_type:leave_types(*),
-        employee:profiles!leave_requests_employee_id_fkey(id, full_name, employee_code, email, designation, department_id)
-      `
-      )
-      .neq("employee_id", profile.id)
+      .select("*, leave_type:leave_types(*)")
+      .eq("employee_id", profile.id)
       .order("created_at", { ascending: false })
-      .limit(100);
-    teamRequests = (data as LeaveRequest[]) ?? [];
-  }
+      .limit(100),
+    supabase
+      .from("holidays")
+      .select("*")
+      .order("holiday_date", { ascending: true }),
+    profile.role === "MANAGER"
+      ? supabase
+          .from("leave_requests")
+          .select(
+            `
+            *,
+            leave_type:leave_types(*),
+            employee:profiles!leave_requests_employee_id_fkey(id, full_name, employee_code, email, designation, department_id)
+          `
+          )
+          .neq("employee_id", profile.id)
+          .order("created_at", { ascending: false })
+          .limit(100)
+      : Promise.resolve({ data: [] }),
+  ]);
+
+  const teamRequests = (teamResult.data as LeaveRequest[]) ?? [];
 
   return (
     <AppShell

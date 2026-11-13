@@ -7,10 +7,10 @@ import type { Department, Profile } from "@/types/database";
 
 export default async function AdminDepartmentsPage() {
   const profile = await requireAdmin();
-  const { unreadNotifications, pendingRegistrations } = await getShellCounts(profile);
 
   const admin = createAdminClient();
-  const [{ data: departments }, { data: managers }] = await Promise.all([
+  const [{ unreadNotifications, pendingRegistrations }, { data: departments }, { data: managers }] = await Promise.all([
+    getShellCounts(profile),
     admin.from("departments").select("*").order("name", { ascending: true }),
     admin
       .from("profiles")

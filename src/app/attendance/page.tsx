@@ -14,11 +14,15 @@ export default async function AttendancePage() {
     redirect("/admin/attendance");
   }
   const settings = await getOfficeSettings();
-  const { unreadNotifications, pendingRegistrations } = await getShellCounts(profile);
   const todayStr = getOfficeDateString(new Date(), settings.timezone);
 
   const supabase = await createClient();
-  const [{ data: records }, { data: holidays }] = await Promise.all([
+  const [
+    { unreadNotifications, pendingRegistrations },
+    { data: records },
+    { data: holidays },
+  ] = await Promise.all([
+    getShellCounts(profile),
     supabase
       .from("attendance")
       .select("*")

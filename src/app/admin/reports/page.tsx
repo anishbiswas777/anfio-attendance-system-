@@ -10,14 +10,16 @@ import type { Department } from "@/types/database";
 export default async function AdminReportsPage() {
   const profile = await requireAdmin();
   const settings = await getOfficeSettings();
-  const { unreadNotifications, pendingRegistrations } = await getShellCounts(profile);
   const todayStr = getOfficeDateString(new Date(), settings.timezone);
 
   const admin = createAdminClient();
-  const { data: departments } = await admin
-    .from("departments")
-    .select("*")
-    .order("name", { ascending: true });
+  const [{ unreadNotifications, pendingRegistrations }, { data: departments }] = await Promise.all([
+    getShellCounts(profile),
+    admin
+      .from("departments")
+      .select("*")
+      .order("name", { ascending: true }),
+  ]);
 
   return (
     <AppShell

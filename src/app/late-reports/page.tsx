@@ -14,32 +14,38 @@ export default async function LateReportsPage() {
     redirect("/admin/late-reports");
   }
   const settings = await getOfficeSettings();
-  const { unreadNotifications, pendingRegistrations } = await getShellCounts(profile);
   const todayStr = getOfficeDateString(new Date(), settings.timezone);
 
   const supabase = await createClient();
-  const { data: ownReports } = await supabase
-    .from("late_reports")
-    .select("*")
-    .eq("employee_id", profile.id)
-    .order("created_at", { ascending: false })
-    .limit(100);
 
-  let teamReports: LateReport[] = [];
-  if (profile.role === "MANAGER") {
-    const { data } = await supabase
+  const [
+    { unreadNotifications, pendingRegistrations },
+    { data: ownReports },
+    teamResult,
+  ] = await Promise.all([
+    getShellCounts(profile),
+    supabase
       .from("late_reports")
-      .select(
-        `
-        *,
-        employee:profiles!late_reports_employee_id_fkey(id, full_name, employee_code, email, designation, department_id)
-      `
-      )
-      .neq("employee_id", profile.id)
+      .select("*")
+      .eq("employee_id", profile.id)
       .order("created_at", { ascending: false })
-      .limit(100);
-    teamReports = (data as LateReport[]) ?? [];
-  }
+      .limit(100),
+    profile.role === "MANAGER"
+      ? supabase
+          .from("late_reports")
+          .select(
+            `
+            *,
+            employee:profiles!late_reports_employee_id_fkey(id, full_name, employee_code, email, designation, department_id)
+          `
+          )
+          .neq("employee_id", profile.id)
+          .order("created_at", { ascending: false })
+          .limit(100)
+      : Promise.resolve({ data: [] }),
+  ]);
+
+  const teamReports = (teamResult.data as LateReport[]) ?? [];
 
   return (
     <AppShell

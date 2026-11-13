@@ -128,6 +128,7 @@ export function AppShell({
         <Link
           key={item.href}
           href={item.href}
+          prefetch={true}
           onClick={() => {
             if (item.href !== pathname) {
               setNavigatingHref(item.href);
@@ -388,6 +389,12 @@ export function AppShell({
               <Link
                 key={item.href}
                 href={item.href}
+                prefetch={true}
+                onClick={() => {
+                  if (item.href !== pathname) {
+                    setNavigatingHref(item.href);
+                  }
+                }}
                 className={cn(
                   "flex flex-col items-center justify-center gap-1 text-[11px] font-medium relative",
                   active

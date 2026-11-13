@@ -7,13 +7,15 @@ import type { Holiday } from "@/types/database";
 
 export default async function AdminHolidaysPage() {
   const profile = await requireAdmin();
-  const { unreadNotifications, pendingRegistrations } = await getShellCounts(profile);
 
   const admin = createAdminClient();
-  const { data } = await admin
-    .from("holidays")
-    .select("*")
-    .order("holiday_date", { ascending: true });
+  const [{ unreadNotifications, pendingRegistrations }, { data }] = await Promise.all([
+    getShellCounts(profile),
+    admin
+      .from("holidays")
+      .select("*")
+      .order("holiday_date", { ascending: true }),
+  ]);
 
   return (
     <AppShell

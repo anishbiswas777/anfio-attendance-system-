@@ -7,19 +7,21 @@ import type { LateReport } from "@/types/database";
 
 export default async function AdminLateReportsPage() {
   const profile = await requireAdmin();
-  const { unreadNotifications, pendingRegistrations } = await getShellCounts(profile);
 
   const admin = createAdminClient();
-  const { data } = await admin
-    .from("late_reports")
-    .select(
+  const [{ unreadNotifications, pendingRegistrations }, { data }] = await Promise.all([
+    getShellCounts(profile),
+    admin
+      .from("late_reports")
+      .select(
+        `
+        *,
+        employee:profiles!late_reports_employee_id_fkey(id, full_name, employee_code, department_id, department:departments!profiles_department_id_fkey(id, name))
       `
-      *,
-      employee:profiles!late_reports_employee_id_fkey(id, full_name, employee_code, department_id, department:departments!profiles_department_id_fkey(id, name))
-    `
-    )
-    .order("created_at", { ascending: false })
-    .limit(200);
+      )
+      .order("created_at", { ascending: false })
+      .limit(200),
+  ]);
 
   return (
     <AppShell

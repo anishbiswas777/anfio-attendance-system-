@@ -16,12 +16,12 @@ import { EmptyState } from "@/components/ui/EmptyState";
 export default async function AdminDashboardPage() {
   const profile = await requireAdmin();
   const settings = await getOfficeSettings();
-  const { unreadNotifications, pendingRegistrations } = await getShellCounts(profile);
   const todayStr = getOfficeDateString(new Date(), settings.timezone);
 
   const admin = createAdminClient();
 
   const [
+    { unreadNotifications, pendingRegistrations },
     { data: allProfiles },
     { data: todayAttendance },
     { data: approvedLeavesToday },
@@ -31,6 +31,7 @@ export default async function AdminDashboardPage() {
     { data: departments },
     { data: recentAudits },
   ] = await Promise.all([
+    getShellCounts(profile),
     admin.from("profiles").select("id, role, account_status, department_id"),
     admin
       .from("attendance")
