@@ -168,15 +168,17 @@ html {
 }
 
 /* Netlify Badge & Drawer Suppression */
-html.nl-narrow {
-  display: none !important;
-}
-
+#nl-badge-frame,
+iframe#nl-badge-frame,
+iframe[id^="nl-"],
+iframe[id*="nl-badge"],
+iframe[data-nl-ready],
 iframe[src*="netlify"],
 iframe[id*="netlify"],
 div[id*="netlify-badge"],
 #netlify-badge,
-.netlify-badge,
+.nl-badge,
+.nl-wrap,
 netlify-drawer,
 [data-netlify-deploy-id],
 [class*="nl-narrow"] {
@@ -184,4 +186,12 @@ netlify-drawer,
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  position: fixed !important;
+  top: -99999px !important;
+  left: -99999px !important;
+  clip-path: inset(100%) !important;
+  clip: rect(0, 0, 0, 0) !important;
+  z-index: -999999 !important;
 }

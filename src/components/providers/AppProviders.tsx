@@ -33,18 +33,36 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
 
     // Suppress any injected Netlify badge/drawer elements dynamically
     const removeNetlifyBadge = () => {
-      const badges = document.querySelectorAll(
-        'iframe[src*="netlify"], [id*="netlify-badge"], [class*="netlify-badge"], netlify-drawer'
-      );
+      const selectors = [
+        "#nl-badge-frame",
+        'iframe#nl-badge-frame',
+        'iframe[id^="nl-"]',
+        'iframe[data-nl-ready]',
+        'iframe[src*="netlify"]',
+        'div[id*="netlify-badge"]',
+        '#netlify-badge',
+        '.nl-badge',
+        'netlify-drawer',
+        '[data-netlify-deploy-id]',
+      ];
+      const badges = document.querySelectorAll(selectors.join(", "));
       badges.forEach((el) => {
-        (el as HTMLElement).style.setProperty("display", "none", "important");
-        (el as HTMLElement).style.setProperty("visibility", "hidden", "important");
-        el.remove();
+        try {
+          (el as HTMLElement).style.setProperty("display", "none", "important");
+          (el as HTMLElement).style.setProperty("visibility", "hidden", "important");
+          (el as HTMLElement).style.setProperty("opacity", "0", "important");
+          (el as HTMLElement).style.setProperty("pointer-events", "none", "important");
+          (el as HTMLElement).style.setProperty("width", "0px", "important");
+          (el as HTMLElement).style.setProperty("height", "0px", "important");
+          el.remove();
+        } catch {
+          // ignore error if removal fails
+        }
       });
     };
     removeNetlifyBadge();
     const observer = new MutationObserver(removeNetlifyBadge);
-    observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.documentElement, { childList: true, subtree: true });
 
     return () => {
       observer.disconnect();
