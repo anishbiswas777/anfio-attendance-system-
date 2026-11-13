@@ -334,7 +334,7 @@ export function AppShell({
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col lg:pl-64 min-w-0">
         {/* Top Bar */}
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200/80 dark:border-white/[0.08] bg-white/90 dark:bg-black/85 backdrop-blur-xl px-3 sm:px-6">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-slate-200/80 dark:border-white/[0.08] bg-white/95 dark:bg-[#000000] backdrop-blur-xl px-3 sm:px-6 shadow-xs dark:shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <button
               type="button"
@@ -397,25 +397,27 @@ export function AppShell({
           </div>
         </header>
 
-        <main className="flex-1 px-3 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 pb-36 sm:pb-28 lg:pb-8 max-w-7xl w-full mx-auto min-w-0">
+        <main className="flex-1 px-3 sm:px-6 lg:px-8 pt-5 sm:pt-6 pb-36 sm:pb-28 lg:pb-8 max-w-7xl w-full mx-auto min-w-0">
           {children}
         </main>
 
-        {/* Mobile Bottom Navigation */}
+        {/* Mobile Bottom Navigation (with Late tab included) */}
         <nav
           aria-label="Mobile Bottom Navigation"
-          className="fixed bottom-0 inset-x-0 z-30 lg:hidden border-t border-slate-200/80 dark:border-white/[0.08] bg-white/95 dark:bg-black/90 backdrop-blur-xl grid grid-cols-5 min-h-[4rem] h-auto py-1.5 pb-[max(0.6rem,env(safe-area-inset-bottom))]"
+          className="fixed bottom-0 inset-x-0 z-30 lg:hidden border-t border-slate-200/80 dark:border-white/[0.08] bg-white/95 dark:bg-black/95 backdrop-blur-xl grid grid-cols-6 min-h-[4rem] h-auto py-1.5 pb-[max(0.6rem,env(safe-area-inset-bottom))]"
         >
           {(profile.role === "ADMIN"
             ? [
                 { label: "Admin", href: "/admin", icon: ShieldCheck },
                 { label: "Approve", href: "/admin/registrations", icon: UserCheck },
-                { label: "Attendance", href: "/admin/attendance", icon: Clock },
+                { label: "Attend", href: "/admin/attendance", icon: Clock },
+                { label: "Late", href: "/admin/late-reports", icon: FileWarning },
                 { label: "Leave", href: "/admin/leave", icon: CalendarDays },
               ]
             : [
                 { label: "Home", href: "/dashboard", icon: LayoutDashboard },
                 { label: "Attend", href: "/attendance", icon: Clock },
+                { label: "Late", href: "/late-reports", icon: FileWarning },
                 { label: "Leave", href: "/leave", icon: CalendarDays },
                 { label: "Team", href: "/team", icon: Users },
               ]
@@ -433,29 +435,29 @@ export function AppShell({
                   }
                 }}
                 className={cn(
-                  "flex flex-col items-center justify-center gap-1 text-[11px] font-medium relative transition-colors py-1",
+                  "flex flex-col items-center justify-center gap-1 text-[10px] leading-tight font-medium relative transition-colors py-1 px-0.5",
                   active
                     ? "text-blue-600 dark:text-indigo-400 font-semibold"
                     : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
                 )}
               >
                 <Icon className={cn("h-4 w-4", active && "scale-110 transition-transform")} />
-                <span className="truncate max-w-[60px]">{item.label}</span>
+                <span className="truncate max-w-full">{item.label}</span>
                 {active && (
                   <span className="w-1 h-1 rounded-full bg-blue-600 dark:bg-indigo-400" />
                 )}
                 {item.href === "/admin/registrations" && pendingRegistrations > 0 && (
-                  <span className="absolute top-1.5 right-4 h-2 w-2 rounded-full bg-amber-500 ring-2 ring-white dark:ring-black" />
+                  <span className="absolute top-1.5 right-2 h-2 w-2 rounded-full bg-amber-500 ring-2 ring-white dark:ring-black" />
                 )}
               </Link>
             );
           })}
 
-          {/* 5th item: More / Menu drawer trigger */}
+          {/* 6th item: More / Menu drawer trigger */}
           <button
             type="button"
             onClick={() => setMobileOpen(true)}
-            className="flex flex-col items-center justify-center gap-1 text-[11px] font-medium text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer py-1"
+            className="flex flex-col items-center justify-center gap-1 text-[10px] leading-tight font-medium text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 cursor-pointer py-1 px-0.5"
           >
             <Menu className="h-4 w-4" />
             <span>More</span>

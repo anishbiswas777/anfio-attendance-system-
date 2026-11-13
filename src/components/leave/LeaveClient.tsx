@@ -248,7 +248,7 @@ export function LeaveClient({
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
+                <div className="min-w-0">
                   <label htmlFor="start_date" className="block text-sm font-medium mb-1">
                     Start Date *
                   </label>
@@ -256,10 +256,10 @@ export function LeaveClient({
                     id="start_date"
                     type="date"
                     {...register("start_date")}
-                    className="w-full rounded-xl border border-slate-300 dark:border-white/[0.1] bg-white dark:bg-[#0c0c12] px-3 py-2 text-sm text-slate-900 dark:text-white"
+                    className="w-full min-w-0 rounded-xl border border-slate-300 dark:border-white/[0.1] bg-white dark:bg-[#0c0c12] px-3 py-2 text-sm text-slate-900 dark:text-white"
                   />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <label htmlFor="end_date" className="block text-sm font-medium mb-1">
                     End Date *
                   </label>
@@ -267,7 +267,7 @@ export function LeaveClient({
                     id="end_date"
                     type="date"
                     {...register("end_date")}
-                    className="w-full rounded-xl border border-slate-300 dark:border-white/[0.1] bg-white dark:bg-[#0c0c12] px-3 py-2 text-sm text-slate-900 dark:text-white"
+                    className="w-full min-w-0 rounded-xl border border-slate-300 dark:border-white/[0.1] bg-white dark:bg-[#0c0c12] px-3 py-2 text-sm text-slate-900 dark:text-white"
                   />
                 </div>
               </div>

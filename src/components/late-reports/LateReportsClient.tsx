@@ -185,7 +185,7 @@ export function LateReportsClient({
                   id="report_date"
                   type="date"
                   {...register("report_date")}
-                  className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm"
+                  className="w-full min-w-0 rounded-xl border border-slate-300 dark:border-white/[0.1] bg-white dark:bg-[#0c0c12] px-3 py-2 text-sm text-slate-900 dark:text-white"
                 />
                 {errors.report_date && (
                   <p className="mt-1 text-xs text-rose-600">
@@ -194,8 +194,8 @@ export function LateReportsClient({
                 )}
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="min-w-0">
                   <label
                     htmlFor="expected_arrival"
                     className="block text-sm font-medium mb-1"
@@ -206,10 +206,10 @@ export function LateReportsClient({
                     id="expected_arrival"
                     type="time"
                     {...register("expected_arrival")}
-                    className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm"
+                    className="w-full min-w-0 rounded-xl border border-slate-300 dark:border-white/[0.1] bg-white dark:bg-[#0c0c12] px-3 py-2 text-sm text-slate-900 dark:text-white"
                   />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <label
                     htmlFor="actual_arrival"
                     className="block text-sm font-medium mb-1"
@@ -220,7 +220,7 @@ export function LateReportsClient({
                     id="actual_arrival"
                     type="time"
                     {...register("actual_arrival")}
-                    className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm"
+                    className="w-full min-w-0 rounded-xl border border-slate-300 dark:border-white/[0.1] bg-white dark:bg-[#0c0c12] px-3 py-2 text-sm text-slate-900 dark:text-white"
                   />
                   {errors.actual_arrival && (
                     <p className="mt-1 text-xs text-rose-600">
@@ -237,7 +237,7 @@ export function LateReportsClient({
                 <select
                   id="reason"
                   {...register("reason")}
-                  className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm"
+                  className="w-full min-w-0 rounded-xl border border-slate-300 dark:border-white/[0.1] bg-white dark:bg-[#0c0c12] px-3 py-2 text-sm text-slate-900 dark:text-white"
                 >
                   {REASONS.map((r) => (
                     <option key={r} value={r}>
@@ -256,7 +256,7 @@ export function LateReportsClient({
                   rows={3}
                   {...register("description")}
                   placeholder="Provide brief context..."
-                  className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm"
+                  className="w-full min-w-0 rounded-xl border border-slate-300 dark:border-white/[0.1] bg-white dark:bg-[#0c0c12] px-3 py-2 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-600"
                 />
               </div>
 
@@ -269,7 +269,7 @@ export function LateReportsClient({
                   type="file"
                   accept="image/png,image/jpeg,image/webp,application/pdf"
                   onChange={(e) => setAttachmentFile(e.target.files?.[0] ?? null)}
-                  className="w-full rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-1.5 text-xs"
+                  className="w-full min-w-0 rounded-xl border border-slate-300 dark:border-white/[0.1] bg-white dark:bg-[#0c0c12] px-3 py-1.5 text-xs text-slate-700 dark:text-slate-300"
                 />
               </div>
 
@@ -293,32 +293,34 @@ export function LateReportsClient({
                 icon={<FileWarning className="h-5 w-5" />}
               />
             ) : (
-              <div className="divide-y divide-slate-100 dark:divide-slate-800">
+              <div className="divide-y divide-slate-100 dark:divide-white/[0.06]">
                 {ownReports.map((rep) => (
                   <div
                     key={rep.id}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4"
+                    className="flex flex-col gap-2.5 p-4 hover:bg-slate-50/50 dark:hover:bg-white/[0.02] transition-colors"
                   >
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-semibold">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-sm font-semibold text-slate-900 dark:text-white">
                           {rep.report_date}
                         </span>
-                        <span className="text-xs text-slate-500">
+                        <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 dark:bg-white/[0.06] font-mono text-xs text-slate-600 dark:text-slate-300 border border-slate-200/50 dark:border-white/[0.08]">
                           {rep.expected_arrival} → {rep.actual_arrival}
                         </span>
                       </div>
-                      <p className="text-xs font-medium text-slate-700 dark:text-slate-300 mt-1">
-                        {rep.reason}
-                        {rep.description ? ` — ${rep.description}` : ""}
-                      </p>
-                      {rep.rejection_reason && (
-                        <p className="text-xs text-rose-600 mt-1">
-                          Rejection reason: {rep.rejection_reason}
-                        </p>
-                      )}
+                      <div className="flex items-center justify-between sm:justify-end gap-2 shrink-0">
+                        <StatusBadge status={rep.status} />
+                      </div>
                     </div>
-                    <StatusBadge status={rep.status} />
+                    <p className="text-xs text-slate-600 dark:text-slate-400 bg-slate-50/80 dark:bg-white/[0.02] p-2.5 rounded-lg border border-slate-100 dark:border-white/[0.04]">
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">{rep.reason}</span>
+                      {rep.description ? ` — ${rep.description}` : ""}
+                    </p>
+                    {rep.rejection_reason && (
+                      <p className="text-xs text-rose-500 bg-rose-500/10 border border-rose-500/20 p-2.5 rounded-lg">
+                        <span className="font-semibold">Rejection reason:</span> {rep.rejection_reason}
+                      </p>
+                    )}
                   </div>
                 ))}
               </div>

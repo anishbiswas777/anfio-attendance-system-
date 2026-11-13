@@ -53,12 +53,20 @@ body {
 .dark input[type="password"],
 .dark input[type="tel"],
 .dark input[type="date"],
+.dark input[type="time"],
 .dark input[type="number"],
 .dark select,
 .dark textarea {
   background-color: #0c0c12 !important;
   border-color: rgba(255, 255, 255, 0.1) !important;
   color: #f8fafc !important;
+}
+
+input[type="date"],
+input[type="time"] {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .dark input:focus,
@@ -69,7 +77,8 @@ body {
   outline: none !important;
 }
 
-.dark input[type="date"]::-webkit-calendar-picker-indicator {
+.dark input[type="date"]::-webkit-calendar-picker-indicator,
+.dark input[type="time"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
   opacity: 0.8;
   cursor: pointer;

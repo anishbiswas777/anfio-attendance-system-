@@ -84,7 +84,7 @@ export function AdminLateReportsClient({
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
               aria-label="Filter by status"
-              className="rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-1.5 text-sm"
+              className="w-full sm:w-auto rounded-xl border border-slate-300 dark:border-white/[0.1] bg-white dark:bg-[#0c0c12] px-3 py-1.5 text-sm text-slate-900 dark:text-white"
             >
               <option value="">All Statuses</option>
               <option value="PENDING">Pending</option>
@@ -101,67 +101,132 @@ export function AdminLateReportsClient({
               icon={<FileWarning className="h-5 w-5" />}
             />
           ) : (
-            <div className="overflow-x-auto touch-scroll">
-              <table className="w-full text-left text-sm min-w-[620px]">
-                <thead className="border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 text-xs uppercase text-slate-500">
-                  <tr>
-                    <th className="px-4 py-3 whitespace-nowrap">Employee</th>
-                    <th className="px-4 py-3 whitespace-nowrap">Date</th>
-                    <th className="px-4 py-3 whitespace-nowrap">Arrival</th>
-                    <th className="px-4 py-3 whitespace-nowrap">Reason</th>
-                    <th className="px-4 py-3 whitespace-nowrap">Status</th>
-                    <th className="px-4 py-3 whitespace-nowrap text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                  {filtered.map((rep) => (
-                    <tr key={rep.id}>
-                      <td className="px-4 py-3">
-                        <p className="font-medium">{rep.employee?.full_name || "—"}</p>
-                        <p className="text-xs text-slate-500">
-                          {rep.employee?.department?.name || "—"}
+            <>
+              {/* Mobile Card View (< md) */}
+              <div className="block md:hidden divide-y divide-slate-100 dark:divide-white/[0.06]">
+                {filtered.map((rep) => (
+                  <div key={rep.id} className="p-4 space-y-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <p className="font-semibold text-sm text-slate-900 dark:text-white truncate">
+                          {rep.employee?.full_name || "—"}
                         </p>
-                      </td>
-                      <td className="px-4 py-3">{rep.report_date}</td>
-                      <td className="px-4 py-3">
+                        <p className="text-xs text-slate-500 dark:text-slate-400">
+                          {rep.employee?.department?.name || "General"}
+                        </p>
+                      </div>
+                      <StatusBadge status={rep.status} />
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2 text-xs">
+                      <span className="font-medium text-slate-800 dark:text-slate-200">
+                        {rep.report_date}
+                      </span>
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 dark:bg-white/[0.06] font-mono text-slate-600 dark:text-slate-300 border border-slate-200/50 dark:border-white/[0.08]">
                         {rep.expected_arrival} → {rep.actual_arrival}
-                      </td>
-                      <td className="px-4 py-3 max-w-xs truncate">
-                        {rep.reason}
-                        {rep.description ? ` — ${rep.description}` : ""}
-                      </td>
-                      <td className="px-4 py-3">
-                        <StatusBadge status={rep.status} />
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        {rep.status === "PENDING" ? (
-                          <div className="inline-flex gap-2">
-                            <Button
-                              size="sm"
-                              loading={busyId === rep.id}
-                              disabled={Boolean(busyId)}
-                              onClick={() => handleReview(rep.id, "APPROVED")}
-                            >
-                              Approve
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="danger"
-                              disabled={Boolean(busyId)}
-                              onClick={() => setRejectTarget(rep)}
-                            >
-                              Reject
-                            </Button>
-                          </div>
-                        ) : (
-                          <span className="text-xs text-slate-400">Reviewed</span>
-                        )}
-                      </td>
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-slate-600 dark:text-slate-400 bg-slate-50/80 dark:bg-white/[0.02] p-2.5 rounded-lg border border-slate-100 dark:border-white/[0.04]">
+                      <span className="font-semibold text-slate-800 dark:text-slate-200">{rep.reason}</span>
+                      {rep.description ? ` — ${rep.description}` : ""}
+                    </p>
+
+                    {rep.status === "PENDING" ? (
+                      <div className="flex items-center gap-2 pt-1">
+                        <Button
+                          size="sm"
+                          className="flex-1"
+                          loading={busyId === rep.id}
+                          disabled={Boolean(busyId)}
+                          onClick={() => handleReview(rep.id, "APPROVED")}
+                        >
+                          Approve
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="danger"
+                          className="flex-1"
+                          disabled={Boolean(busyId)}
+                          onClick={() => setRejectTarget(rep)}
+                        >
+                          Reject
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="text-right">
+                        <span className="text-xs text-slate-400 dark:text-slate-500">
+                          Reviewed
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop / Tablet Table View (>= md) */}
+              <div className="hidden md:block overflow-x-auto touch-scroll">
+                <table className="w-full text-left text-sm min-w-[620px]">
+                  <thead className="border-b border-slate-200 dark:border-white/[0.08] bg-slate-50 dark:bg-white/[0.02] text-xs uppercase text-slate-500 dark:text-slate-400">
+                    <tr>
+                      <th className="px-4 py-3 whitespace-nowrap">Employee</th>
+                      <th className="px-4 py-3 whitespace-nowrap">Date</th>
+                      <th className="px-4 py-3 whitespace-nowrap">Arrival</th>
+                      <th className="px-4 py-3 whitespace-nowrap">Reason</th>
+                      <th className="px-4 py-3 whitespace-nowrap">Status</th>
+                      <th className="px-4 py-3 whitespace-nowrap text-right">Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 dark:divide-white/[0.06]">
+                    {filtered.map((rep) => (
+                      <tr key={rep.id} className="hover:bg-slate-50/50 dark:hover:bg-white/[0.02] transition-colors">
+                        <td className="px-4 py-3">
+                          <p className="font-medium text-slate-900 dark:text-white">{rep.employee?.full_name || "—"}</p>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">
+                            {rep.employee?.department?.name || "—"}
+                          </p>
+                        </td>
+                        <td className="px-4 py-3 text-slate-800 dark:text-slate-200 whitespace-nowrap">{rep.report_date}</td>
+                        <td className="px-4 py-3 font-mono text-xs text-slate-700 dark:text-slate-300 whitespace-nowrap">
+                          {rep.expected_arrival} → {rep.actual_arrival}
+                        </td>
+                        <td className="px-4 py-3 max-w-xs truncate text-slate-600 dark:text-slate-400">
+                          {rep.reason}
+                          {rep.description ? ` — ${rep.description}` : ""}
+                        </td>
+                        <td className="px-4 py-3">
+                          <StatusBadge status={rep.status} />
+                        </td>
+                        <td className="px-4 py-3 text-right">
+                          {rep.status === "PENDING" ? (
+                            <div className="inline-flex gap-2">
+                              <Button
+                                size="sm"
+                                loading={busyId === rep.id}
+                                disabled={Boolean(busyId)}
+                                onClick={() => handleReview(rep.id, "APPROVED")}
+                              >
+                                Approve
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="danger"
+                                disabled={Boolean(busyId)}
+                                onClick={() => setRejectTarget(rep)}
+                              >
+                                Reject
+                              </Button>
+                            </div>
+                          ) : (
+                            <span className="text-xs text-slate-400 dark:text-slate-500">Reviewed</span>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
           )}
         </CardContent>
       </Card>
